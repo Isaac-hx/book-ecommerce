@@ -1,7 +1,6 @@
-package token
+package utils
 
 import (
-	"Backend/utils"
 	"fmt"
 	"strconv"
 	"strings"
@@ -11,10 +10,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var API_SECRET = utils.Getenv("API_SECRET", "secret_key")
+var API_SECRET = Getenv("API_SECRET", "secret_key")
 
-func GenerateToken(user_id uint) (string, error) {
-	token_lifespan, err := strconv.Atoi(utils.Getenv("TOKEN_HOUR_LIFESPAN", "1"))
+func GenerateToken(user_id uint, role string) (string, error) {
+	token_lifespan, err := strconv.Atoi(Getenv("TOKEN_HOUR_LIFESPAN", "1"))
 
 	if err != nil {
 		return "", err
@@ -23,6 +22,8 @@ func GenerateToken(user_id uint) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["user_id"] = user_id
+	claims["role"] = role // Add role claim
+
 	claims["exp"] = time.Now().Add(time.Hour * time.Duration(token_lifespan)).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
@@ -77,4 +78,27 @@ func ExtractTokenID(c *gin.Context) (uint, error) {
 		return uint(uid), nil
 	}
 	return 0, nil
+}
+
+func ExtractTokenRole(c *gin.Context) (string, error) {
+	tokenString := ExtractToken(c)
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(API_SECRET), nil
+	})
+	if err != nil {
+		return "", err
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if ok && token.Valid {
+		// Extract the role from the token claims
+		role, ok := claims["role"].(string)
+		if !ok {
+			return "", fmt.Errorf("role not found in token")
+		}
+		return role, nil
+	}
+	return "", fmt.Errorf("invalid token")
 }
