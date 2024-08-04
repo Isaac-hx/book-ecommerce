@@ -27,6 +27,7 @@ func Register(c *gin.Context) {
 
 	u.EmailAddress = input.EmailAddress
 	u.Password = input.Password
+	u.Role = "user"
 
 	_, err := u.SaveUser(db)
 

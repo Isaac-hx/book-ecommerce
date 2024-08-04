@@ -23,7 +23,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, err := models.LoginCheck(input.EmailAddress, input.Password, db)
+	token, role, err := models.LoginCheck(input.EmailAddress, input.Password, db)
 
 	if err != nil {
 		fmt.Println(err)
@@ -31,5 +31,5 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "login success", "token": token})
+	c.JSON(http.StatusOK, gin.H{"message": "login success", "token": token, "role": role})
 }
