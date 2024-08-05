@@ -67,3 +67,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* used for removing arrow from number input */
+.hide-arrow[type="number"]::-webkit-inner-spin-button,
+.hide-arrow[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

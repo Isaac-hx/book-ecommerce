@@ -1,1 +1,2 @@
-export * from "./TanstackQuery"
+export * from "./TanstackQuery";
+export * from "./Theme";
