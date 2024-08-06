@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"net/http"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -44,6 +46,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	r.GET("/category", handlers.GetAllCategory)
 	r.GET("/category/:id", handlers.GetCategoryById)
+  
+  r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
+	})
 
 	return r
 }

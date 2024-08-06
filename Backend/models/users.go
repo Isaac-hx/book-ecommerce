@@ -1,6 +1,9 @@
 package models
 
 import (
+	"Backend/utils"
+	"errors"
+
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 
@@ -55,4 +58,3 @@ func LoginCheck(email string, password string, db *gorm.DB) (string, string, err
 func VerifyPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
-
