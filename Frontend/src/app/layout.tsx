@@ -2,9 +2,9 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { CookiesProvider } from "next-client-cookies/server";
 
-import { TanstackQueryProvider } from "@/components/providers";
-import { Toaster } from "@/components/ui/sonner";
+import { AppShell } from "@/components/layouts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <TanstackQueryProvider>{children}</TanstackQueryProvider>
-        <Toaster />
+        <CookiesProvider>
+          <AppShell>{children}</AppShell>
+        </CookiesProvider>
       </body>
     </html>
   );
