@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { CookiesProvider } from "next-client-cookies/server";
 
 import { Navbar } from "@/components/organisms";
 import { TanstackQueryProvider, ThemeProvider } from "@/components/providers";
@@ -23,12 +24,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <TanstackQueryProvider>
-            {/* TODO: Validate navbar logic */}
-            <Navbar />
-            <main>{children}</main>
-            <Toaster />
-          </TanstackQueryProvider>
+          <CookiesProvider>
+            <TanstackQueryProvider>
+              {/* TODO: Validate navbar logic */}
+              <Navbar />
+              <main>{children}</main>
+              <Toaster />
+            </TanstackQueryProvider>
+          </CookiesProvider>
         </ThemeProvider>
       </body>
     </html>

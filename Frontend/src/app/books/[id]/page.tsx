@@ -149,7 +149,7 @@ export default function DetailBookPage() {
               {formatRupiah(book.price * quantity)}
             </p>
           </div>
-          <Button className="text-foreground">
+          <Button>
             Keranjang <ShoppingCart className="ml-2" />
           </Button>
         </div>
