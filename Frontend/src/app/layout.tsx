@@ -4,9 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { CookiesProvider } from "next-client-cookies/server";
 
-import { Navbar } from "@/components/organisms";
-import { TanstackQueryProvider, ThemeProvider } from "@/components/providers";
-import { Toaster } from "@/components/ui/sonner";
+import { AppShell } from "@/components/layouts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,16 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <CookiesProvider>
-            <TanstackQueryProvider>
-              {/* TODO: Validate navbar logic */}
-              <Navbar />
-              <main>{children}</main>
-              <Toaster />
-            </TanstackQueryProvider>
-          </CookiesProvider>
-        </ThemeProvider>
+        <CookiesProvider>
+          <AppShell>{children}</AppShell>
+        </CookiesProvider>
       </body>
     </html>
   );

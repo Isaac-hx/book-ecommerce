@@ -1,11 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+type role = "admin" | "user";
+
 type AuthStore = {
   token: string | null;
   setToken: (token: string) => void;
-  role: string | null;
-  setRole: (role: string) => void;
+  role: role | null;
+  setRole: (role: role) => void;
   clearAuth: () => void;
 };
 
@@ -15,7 +17,7 @@ export const useAuthStore = create<AuthStore>()(
       token: null,
       role: null,
       setToken: (token: string) => set({ token }),
-      setRole: (role: string) => set({ role }),
+      setRole: (role: role) => set({ role }),
       clearAuth: () => set({ token: null, role: null }),
     }),
     {
