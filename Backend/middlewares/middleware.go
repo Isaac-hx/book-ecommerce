@@ -27,3 +27,4 @@ func RoleMiddleware(requiredRole string) gin.HandlerFunc {
 		c.Next()
 	}
 }
+
