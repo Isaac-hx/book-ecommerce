@@ -16,6 +16,11 @@ require (
 )
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.2.1
+	github.com/kr/text v0.2.0 // indirect
+)
+
+require (
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/bytedance/sonic v1.12.0 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
