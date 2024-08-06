@@ -6,6 +6,10 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+
+	"errors"
+
+	"Backend/utils"
 )
 
 type User struct {
