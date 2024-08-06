@@ -8,7 +8,12 @@ require (
 	gorm.io/gorm v1.25.11
 )
 
-require github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
+require github.com/joho/godotenv v1.5.1 // indirect
+
+require (
+	github.com/golang-jwt/jwt/v5 v5.2.1
+	github.com/kr/text v0.2.0 // indirect
+)
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.1

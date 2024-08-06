@@ -19,7 +19,7 @@ func RoleMiddleware(requiredRole string) gin.HandlerFunc {
 
 		role, err := utils.ExtractTokenRole(c)
 		if err != nil || role != requiredRole {
-			c.JSON(http.StatusForbidden, gin.H{"error": "Forbidden"})
+			c.JSON(http.StatusForbidden, gin.H{"error": "Cant acces this resource"})
 			c.Abort()
 			return
 		}
