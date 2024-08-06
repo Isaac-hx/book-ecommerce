@@ -3,6 +3,10 @@ package models
 import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+
+	"errors"
+
+	"Backend/utils"
 )
 
 type User struct {
@@ -25,3 +29,30 @@ func (u *User) SaveUser(db *gorm.DB) (*User, error) {
 	}
 	return u, nil
 }
+
+func LoginCheck(email string, password string, db *gorm.DB) (string, string, error) {
+	var err error
+	u := User{}
+
+	err = db.Model(User{}).Where("email_address = ?", email).Take(&u).Error
+	if err != nil {
+		return "", "", err
+	}
+
+	err = VerifyPassword(u.Password, password)
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		return "", "", errors.New("incorrect password")
+	}
+
+	token, err := utils.GenerateToken(u.ID, u.Role)
+	if err != nil {
+		return "", "", err
+	}
+
+	return token, u.Role, nil
+}
+
+func VerifyPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}
+

@@ -6,6 +6,7 @@ import (
 	"gorm.io/gorm"
 
 	"Backend/handlers"
+	"Backend/middlewares"
 )
 
 func SetupRouter(db *gorm.DB) *gin.Engine {
@@ -25,6 +26,24 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	})
 
 	r.POST("/register", handlers.Register)
+	r.POST("/login", handlers.Login)
+
+	bookMiddlewareRoute := r.Group("/books")
+	bookMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	bookMiddlewareRoute.POST("", handlers.CreateBook)
+	bookMiddlewareRoute.DELETE("/:id", handlers.DeleteBook)
+
+	r.GET("/books", handlers.GetListBooks)
+	r.GET("/books/:id", handlers.GetBookById)
+
+	categoryMiddlewareRoute := r.Group("/category")
+	categoryMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	categoryMiddlewareRoute.POST("", handlers.CreateCategory)
+	categoryMiddlewareRoute.DELETE("/:id", handlers.DeleteCategory)
+	categoryMiddlewareRoute.PUT("/:id", handlers.UpdateCategory)
+
+	r.GET("/category", handlers.GetAllCategory)
+	r.GET("/category/:id", handlers.GetCategoryById)
 
 	return r
 }
