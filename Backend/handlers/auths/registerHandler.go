@@ -1,7 +1,9 @@
 package auths
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
 	"Backend/models"
 
@@ -17,17 +19,32 @@ type RegisterInput struct {
 func Register(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var input RegisterInput
+	adminAddress := os.Getenv("ADMIN_EMAIL")
+	adminPassword:=os.Getenv("ADMIN_PASSWORD")
+	fmt.Println("email address admin :",adminAddress)
+	fmt.Println("password  admin :",adminPassword)
 
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	u := models.User{}
 
-	u.EmailAddress = input.EmailAddress
-	u.Password = input.Password
-	u.Role = "user"
+	if adminAddress == input.EmailAddress && adminPassword == input.Password{
+		fmt.Println("Ini dijalankan")
+		u.EmailAddress = adminAddress
+		u.Password = adminPassword
+		u.Role = "admin"
+	}else{
+		u.EmailAddress = input.EmailAddress
+		u.Password = input.Password
+		u.Role = "user"
+	}
+
+	
+
+
+
 
 	_, err := u.SaveUser(db)
 

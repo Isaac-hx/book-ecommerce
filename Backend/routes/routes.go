@@ -9,7 +9,7 @@ import (
 
 	"Backend/handlers/auths"
 	"Backend/handlers/books"
-	"Backend/handlers/publishers"
+	"Backend/handlers/categories"
 
 	"Backend/middlewares"
 )
@@ -30,31 +30,28 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		c.Set("db", db)
 	})
 
+	r.POST("/register", auths.Register)
+	r.POST("/login", auths.Login)
 
-	r.POST("/register",auths.Register)
-	r.POST("/login",auths.Login)
-
-
+	bookMiddlewareRoute := r.Group("/books")
+	bookMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	bookMiddlewareRoute.POST("", books.CreateBook)
+	bookMiddlewareRoute.DELETE("/:id", books.DeleteBook)
 
 	r.GET("/books", books.GetListBooks)
 	r.GET("/books/:id", books.GetBookById)
 
-	r.GET("/publisher",publishers.GetAllPublisher)
-	r.GET("/publisher/:id",publishers.GetPublisherById)
+	categoryMiddlewareRoute := r.Group("/category")
+	categoryMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	categoryMiddlewareRoute.POST("", categories.CreateCategory)
+	categoryMiddlewareRoute.DELETE("/:id", categories.DeleteCategory)
+	categoryMiddlewareRoute.PUT("/:id", categories.UpdateCategory)
 
-	// In your route setup
-	accesAdmin:=r.Group("/admin")
-	accesAdmin.Use(middlewares.RoleMiddleware("admin"))
-	{
-		accesAdmin.GET("/dashboard",func(c *gin.Context){
-			c.JSON(http.StatusOK,gin.H{"message":"Halaman index diakses"})
-		})
-		accesAdmin.POST("/publisher",publishers.CreatePublisher)
-		accesAdmin.PUT("/publisher/:id",publishers.UpdatePublisherById)
-		accesAdmin.DELETE("/publisher/:id",publishers.DeletePublisherById)
-
-	}
-
+	r.GET("/category", categories.GetAllCategory)
+  
+  r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
+	})
 
 	return r
 }
