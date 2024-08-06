@@ -26,6 +26,7 @@ func ConnectDB(){
 
 
 	if dbProvider == "mysql" {
+		fmt.Println(dbProvider)
 		//username:= utils.Getenv("USERNAME","root")
 		//password:= ""
 		database:= utils.Getenv("DATABASE_NAME","ecommerce_books")
@@ -41,7 +42,14 @@ func ConnectDB(){
 		}
 
 		//auto migration table if exist in models
-		dbGorm.AutoMigrate(&models.User{})
+		dbGorm.AutoMigrate(
+			&models.Publisher{}, // 1. Tabel Publisher
+			&models.Author{},    // 2. Tabel Author
+			&models.Category{}, 
+			&models.BookCategory{}, // Pastikan tabel pivot diciptakan			// 3. Tabel Category
+			&models.Book{},      // 4. Tabel Book
+			&models.User{},      // 5. Tabel User (jika ada)
+		)
 		DB = dbGorm
 
 
