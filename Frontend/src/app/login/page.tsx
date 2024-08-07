@@ -57,12 +57,13 @@ export default function LoginPage() {
       setToken(data.token);
       setRole(data.role);
       if (data.role === "admin") {
-        router.push("/dashboard");
+        router.push("/admin/home");
       } else {
         router.push("/");
       }
     },
     onError: (error: AxiosError<AuthLoginErrorResponse>) => {
+      console.log(error);
       toast.error(error.response?.data.error);
     },
   });
