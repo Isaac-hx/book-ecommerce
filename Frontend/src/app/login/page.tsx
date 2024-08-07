@@ -54,6 +54,7 @@ export default function LoginPage() {
     onSuccess: (data: AuthLoginResponse) => {
       toast.success(data.message);
       cookies.set("token", data.token);
+      cookies.set("role", data.role);
       setToken(data.token);
       setRole(data.role);
       if (data.role === "admin") {

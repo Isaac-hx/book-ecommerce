@@ -37,7 +37,8 @@ export const Navbar = () => {
     clearAuth();
     router.push("/");
     cookies.remove("token");
-    toast.success("Logout Success");
+    cookies.remove("role");
+    toast.success("Berhasil keluar");
   };
 
   // TODO: Implement search input
