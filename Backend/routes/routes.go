@@ -52,11 +52,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	categoryMiddlewareRoute.DELETE("/:id", categories.DeleteCategory)
 	categoryMiddlewareRoute.PUT("/:id", categories.UpdateCategory)
 
-	
 	// Public category routes
 	r.GET("/category", categories.GetAllCategory)
-	//r.GET("/category/:id", categories.GetCategoryById)
-
+	r.GET("/category/:id", categories.GetCategoryById)
 
 	// publisher routes with admin middleware
 	publisherMidldlewareRoute := r.Group("/publisher")
