@@ -1,0 +1,113 @@
+{
+  "recommended_books": [
+    {
+      "id": 1,
+      "cover_url": "https://cdn.gramedia.com/uploads/picture_meta/2023/11/10/whr7hn47apdpso8wglhrde.jpg",
+      "title": "Journal of Joy",
+      "author": "Sarah Amijo",
+      "price": 50000
+    },
+    {
+      "id": 2,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/Nak_Balajar_Soal_Uang_C_1_4_page-0001.jpg",
+      "title": "Nak, Belajarlah Soal Uang",
+      "author": "Jeong Seon Yong",
+      "price": 50000
+    },
+    {
+      "id": 3,
+      "cover_url": "https://cdn.gramedia.com/uploads/picture_meta/2022/12/26/p5upyyivr7mcjfrvufdkzs.jpg",
+      "title": "The Visual MBA",
+      "author": "Jason Barron",
+      "price": 50000
+    },
+    {
+      "id": 4,
+      "cover_url": "https://cdn.gramedia.com/uploads/picture_meta/2023/1/12/le68p7ser2mh3mdqji4zba.jpg",
+      "title": "The Secret : Rahasia",
+      "author": "Rhonda Byrne",
+      "price": 50000
+    },
+    {
+      "id": 5,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/Cover_Great_At_Work_2022_page-0001.jpg",
+      "title": "Great at Work",
+      "author": "Morten T. Hansen",
+      "price": 50000
+    }
+  ],
+  "new_arrivals": [
+    {
+      "id": 1,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/9786020523316_Melangkah_UV_Spot_R4-1.jpg",
+      "title": "Melangkah",
+      "author": "J.S. Khairen",
+      "price": 50000
+    },
+    {
+      "id": 2,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/Home_Sweet_Loan_cov.jpg",
+      "title": "Home Sweet Loan",
+      "author": "Almira Bastari",
+      "price": 50000
+    },
+    {
+      "id": 3,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/9786020630281_Cover_Manusia.jpg",
+      "title": "Mata Dan Manusia Laut",
+      "author": "Okky Puspa Madasari",
+      "price": 50000
+    },
+    {
+      "id": 4,
+      "cover_url": "https://cdn.gramedia.com/uploads/picture_meta/2023/12/21/tby9brfujqaukgjej2mypv.jpg",
+      "title": "Tragedi Pedang Keadilan",
+      "author": "Keigo Higashino",
+      "price": 50000
+    },
+    {
+      "id": 5,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/9786024553920.png",
+      "title": "Bicara Itu Ada Seninya",
+      "author": "Oh Su Hyang",
+      "price": 50000
+    }
+  ],
+  "best_selling": [
+    {
+      "id": 1,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/img20220905_11493451.jpg",
+      "title": "Hujan",
+      "author": "Tere Liye",
+      "price": 50000
+    },
+    {
+      "id": 2,
+      "cover_url": "https://cdn.gramedia.com/uploads/picture_meta/2023/6/8/bjxy6jybnmb5dhguqyihby.jpg",
+      "title": "Clover",
+      "author": "NA HYERIM",
+      "price": 50000
+    },
+    {
+      "id": 3,
+      "cover_url": "https://cdn.gramedia.com/uploads/picture_meta/2023/6/8/3qaxyret7kcgarrevayw6d.jpg",
+      "title": "Lofarsa",
+      "author": "Rofenaa",
+      "price": 50000
+    },
+    {
+      "id": 4,
+      "cover_url": "https://cdn.gramedia.com/uploads/picture_meta/2023/6/8/j5hasrfmmczwjf35ccfe2x.jpg",
+      "title": "Senja di Alaska",
+      "author": "ABELLSTR25",
+      "price": 50000
+    },
+    {
+      "id": 5,
+      "cover_url": "https://cdn.gramedia.com/uploads/items/9789792281415_Gadis_Kretek_.jpg",
+      "title": "Gadis Kretek",
+      "author": "Ratih Kumala",
+      "price": 50000
+    }
+  ]
+}

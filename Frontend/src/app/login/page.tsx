@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useCookies } from "next-client-cookies";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -31,13 +32,18 @@ import { loginFormSchema } from "@/lib/formSchema";
 import {
   AuthLoginErrorResponse,
   AuthLoginResponse,
+  RoleAvailable,
 } from "@/services/auth/types";
+import { useAuthStore } from "@/store";
 
 export default function LoginPage() {
   const router = useRouter();
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
   });
+
+  const cookies = useCookies();
+  const { setToken, setRole } = useAuthStore((state) => state);
 
   const login = async (values: z.infer<typeof loginFormSchema>) => {
     const { data: response } = await axiosInstance.post("/login", values);
@@ -48,14 +54,18 @@ export default function LoginPage() {
     mutationFn: login,
     onSuccess: (data: AuthLoginResponse) => {
       toast.success(data.message);
+      cookies.set("token", data.token);
+      cookies.set("role", data.role);
+      setToken(data.token);
+      setRole(data.role as RoleAvailable);
       if (data.role === "admin") {
-        router.push("/dashboard");
+        router.push("/admin/home");
       } else {
         router.push("/");
       }
-      localStorage.setItem("token", data.token);
     },
     onError: (error: AxiosError<AuthLoginErrorResponse>) => {
+      console.log(error);
       toast.error(error.response?.data.error);
     },
   });

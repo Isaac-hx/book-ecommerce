@@ -41,18 +41,27 @@ func Register(c *gin.Context) {
 		u.Role = "user"
 	}
 
-	
-
-
-
-
 	_, err := u.SaveUser(db)
-
+	
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	
+	// menambahkan data profile default
+	defaultProfile := models.Profile{
+		UserID:    u.ID,
+		AvatarURL: "", 
+		FirstName: "",
+		LastName:  "",
+		Phone:     "",
+		Address:   "",
+	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "registration success"})
+	if err := db.Create(&defaultProfile).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create profile"})
+		return
+	}
 
+	c.JSON(http.StatusOK, gin.H{"message": "registration success"})	
 }

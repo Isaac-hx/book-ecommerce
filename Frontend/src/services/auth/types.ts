@@ -25,3 +25,5 @@ export type AuthLoginResponse = {
 export type AuthLoginErrorResponse = {
   error: string;
 };
+
+export type RoleAvailable = "admin" | "user";

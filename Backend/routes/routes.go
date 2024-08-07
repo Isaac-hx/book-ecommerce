@@ -7,9 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 
+	"Backend/handlers/authors"
 	"Backend/handlers/auths"
 	"Backend/handlers/books"
 	"Backend/handlers/categories"
+	"Backend/handlers/profiles"
 	"Backend/handlers/publishers"
 
 	"Backend/middlewares"
@@ -39,6 +41,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	bookMiddlewareRoute := r.Group("/books")
 	bookMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	bookMiddlewareRoute.POST("", books.CreateBook)
+	bookMiddlewareRoute.PUT("/:id", books.UpdateBook)
 	bookMiddlewareRoute.DELETE("/:id", books.DeleteBook)
 
 	// Public book routes
@@ -55,6 +58,22 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public category routes
 	r.GET("/category", categories.GetAllCategory)
 	r.GET("/category/:id", categories.GetCategoryById)
+  
+	// Private profile routes 
+	profile := r.Group("/profile")
+	profile.GET("/", profiles.GetAllProfiles)
+	profile.GET("/:id", profiles.GetProfileByID)
+	profile.PUT("/:id", profiles.UpdateProfileById)
+	
+	// Author routes with admin middleware
+	authorMiddlewareRoute := r.Group("/author")
+	authorMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	authorMiddlewareRoute.POST("", authors.CreateAuthor)
+	authorMiddlewareRoute.DELETE("/:id", authors.DeleteAuthor)
+	authorMiddlewareRoute.PUT("/:id", authors.UpdateAuthor)
+
+	// Public author routes
+	r.GET("/author", authors.GetAllAuthors)
 
 	// publisher routes with admin middleware
 	publisherMidldlewareRoute := r.Group("/publisher")
@@ -66,6 +85,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public publisher routes
 	r.GET("/publisher", publishers.GetAllPublisher)
 	r.GET("/publisher/:id", publishers.GetPublisherById)
+  
 	// Admin dashboard route
 	r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
