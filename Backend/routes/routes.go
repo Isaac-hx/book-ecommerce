@@ -11,6 +11,7 @@ import (
 	"Backend/handlers/auths"
 	"Backend/handlers/books"
 	"Backend/handlers/categories"
+	"Backend/handlers/orderItems"
 	"Backend/handlers/profiles"
 	"Backend/handlers/publishers"
 	"Backend/handlers/stocks"
@@ -48,6 +49,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public book routes
 	r.GET("/books", books.GetListBooks)
 	r.GET("/books/:id", books.GetBookById)
+	r.POST("/create-order", orderItems.CreateOrderItem)
 
 	// Category routes with admin middleware
 	categoryMiddlewareRoute := r.Group("/category")
@@ -65,11 +67,11 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.GET("/profile/", profiles.GetAllProfiles)
 	r.GET("/profile/:id", profiles.GetProfileByID)
 
-	
+
 	// Public category routes
 	r.GET("/category", categories.GetAllCategory)
 	//r.GET("/category/:id", categories.GetCategoryById)
-	
+
 	// Author routes with admin middleware
 	authorMiddlewareRoute := r.Group("/author")
 	authorMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))

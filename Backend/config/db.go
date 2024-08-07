@@ -23,8 +23,8 @@ var DB *gorm.DB
 func ConnectDB() {
 	err:=godotenv.Load()
 	if err != nil {
-        log.Fatalf("Error loading .env file")
-    }
+		log.Fatalf("Error loading .env file")
+	}
 
 	//mengambil nilai env
 	dbProvider := utils.Getenv("DB_PROVIDER", "mysql")
@@ -74,5 +74,6 @@ func ConnectDB() {
 		&models.Book{},
 		&models.User{},
 		&models.Profile{},
+		&models.OrderItem{},
 	)
 }
