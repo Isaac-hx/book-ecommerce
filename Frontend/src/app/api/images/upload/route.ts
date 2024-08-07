@@ -29,7 +29,7 @@ export const POST = async (request: Request) => {
     }
 
     if (file.size > MAXIMUM_FILE_SIZE) {
-      return Response.json({ code: "MAX_2_MB" }, { status: 413 });
+      return Response.json({ code: "MAX_500_KB" }, { status: 413 });
     }
 
     const url = await uploadImage(file);
