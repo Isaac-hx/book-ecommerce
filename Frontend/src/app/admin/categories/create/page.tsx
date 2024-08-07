@@ -1,5 +1,5 @@
 import Breadcrumb from "@/components/molecules/breadcrumb";
-import CategoryDataTable from "@/components/organisms/category-data-table";
+import CategoryCreateForm from "@/components/organisms/category-create-form";
 
 const Page = () => {
   return (
@@ -7,11 +7,14 @@ const Page = () => {
       <Breadcrumb
         data={[
           { label: "Beranda", href: "/admin/home" },
-          { label: "Kategori" },
+          { label: "Kategori", href: "/admin/categories" },
+          { label: "Tambah Data" },
         ]}
       />
-      <h2 className="text-3xl font-bold tracking-tight">Kategori</h2>
-      <CategoryDataTable />
+      <h2 className="text-3xl font-bold tracking-tight">
+        Tambah Data Kategori
+      </h2>
+      <CategoryCreateForm />
     </main>
   );
 };
