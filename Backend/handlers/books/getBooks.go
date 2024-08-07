@@ -89,7 +89,7 @@ func GetListBooks(c *gin.Context) {
 		}{
 			ID:       book.ID,
 			Title:    book.Title,
-			// Author:   book.Author.Model,
+			Author:   book.Author.Name,
 			Price:    book.Price,
 			CoverURL: book.CoverUrl,
 		})
@@ -149,7 +149,7 @@ func GetBookById(c *gin.Context){
 	bookData.Height = book.Height
 	bookData.Language = book.Language
 	bookData.Price = book.Price
-	// bookData.AuthorName = book.Author.Name
+	bookData.AuthorName = book.Author.Name
 	bookData.PublisherName = book.Publisher.Name
 	bookData.Category = book.Categories
 	c.JSON(http.StatusOK,gin.H{
