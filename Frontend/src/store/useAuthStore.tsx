@@ -1,13 +1,13 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type role = "admin" | "user";
+import { RoleAvailable } from "@/services/auth/types";
 
 type AuthStore = {
   token: string | null;
   setToken: (token: string) => void;
-  role: role | null;
-  setRole: (role: role) => void;
+  role: RoleAvailable | null;
+  setRole: (role: RoleAvailable) => void;
   clearAuth: () => void;
 };
 
@@ -17,7 +17,7 @@ export const useAuthStore = create<AuthStore>()(
       token: null,
       role: null,
       setToken: (token: string) => set({ token }),
-      setRole: (role: role) => set({ role }),
+      setRole: (role: RoleAvailable) => set({ role }),
       clearAuth: () => set({ token: null, role: null }),
     }),
     {
