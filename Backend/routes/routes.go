@@ -56,15 +56,19 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	categoryMiddlewareRoute.DELETE("/:id", categories.DeleteCategory)
 	categoryMiddlewareRoute.PUT("/:id", categories.UpdateCategory)
 
+	// Private profile route
+	profileMiddlewareRoute := r.Group("/profile")
+	profileMiddlewareRoute.Use(middlewares.UserMiddleware())
+	profileMiddlewareRoute.PUT("/:id", profiles.UpdateProfileById)
+
+	// Public profile routes
+	r.GET("/profile/", profiles.GetAllProfiles)
+	r.GET("/profile/:id", profiles.GetProfileByID)
+
+	
 	// Public category routes
 	r.GET("/category", categories.GetAllCategory)
-	r.GET("/category/:id", categories.GetCategoryById)
-  
-	// Private profile routes 
-	profile := r.Group("/profile")
-	profile.GET("/", profiles.GetAllProfiles)
-	profile.GET("/:id", profiles.GetProfileByID)
-	profile.PUT("/:id", profiles.UpdateProfileById)
+	//r.GET("/category/:id", categories.GetCategoryById)
 	
 	// Author routes with admin middleware
 	authorMiddlewareRoute := r.Group("/author")
@@ -73,8 +77,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	authorMiddlewareRoute.DELETE("/:id", authors.DeleteAuthor)
 	authorMiddlewareRoute.PUT("/:id", authors.UpdateAuthor)
 
+	
 	// Public author routes
 	r.GET("/author", authors.GetAllAuthors)
+	r.GET("/author/:id", authors.GetAuthorById)
 
 	// publisher routes with admin middleware
 	publisherMidldlewareRoute := r.Group("/publisher")
@@ -86,7 +92,6 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public publisher routes
 	r.GET("/publisher", publishers.GetAllPublisher)
 	r.GET("/publisher/:id", publishers.GetPublisherById)
-  
 	// Admin dashboard route
 	r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})

@@ -21,6 +21,12 @@ func UpdateProfileById(c *gin.Context) {
 		return
 	}
 
+	userID := c.MustGet("userID").(uint)
+	if profile.UserID != userID {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized"})
+		return
+	}
+
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -51,7 +57,7 @@ func UpdateProfileById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "data berhasil diubah"})
+	c.JSON(http.StatusOK, gin.H{"message": "Profile updated successfully"})
 }
 
 
