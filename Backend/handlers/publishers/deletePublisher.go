@@ -2,6 +2,7 @@ package publishers
 
 import (
 	"Backend/models"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,10 +11,11 @@ import (
 func DeletePublisherById(c *gin.Context){
 	db:=c.MustGet("db").(*gorm.DB)
 	id:=c.Param("id")
+	fmt.Println(id)
 	var listPublisher models.Publisher
-	queryDelete := db.Unscoped().Where("id = ?",id).Find(&listPublisher)
+	queryDelete := db.Unscoped().Where("id = ?",id).Delete(&listPublisher)
 	if queryDelete.Error != nil{
-		c.AbortWithStatusJSON(http.StatusInternalServerError,gin.H{
+		c.AbortWithStatusJSON(http.StatusBadRequest,gin.H{
 			"message":queryDelete.Error.Error(),
 		})
 		return
