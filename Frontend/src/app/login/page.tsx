@@ -32,6 +32,7 @@ import { loginFormSchema } from "@/lib/formSchema";
 import {
   AuthLoginErrorResponse,
   AuthLoginResponse,
+  RoleAvailable,
 } from "@/services/auth/types";
 import { useAuthStore } from "@/store";
 
@@ -56,7 +57,7 @@ export default function LoginPage() {
       cookies.set("token", data.token);
       cookies.set("role", data.role);
       setToken(data.token);
-      setRole(data.role);
+      setRole(data.role as RoleAvailable);
       if (data.role === "admin") {
         router.push("/admin/home");
       } else {
