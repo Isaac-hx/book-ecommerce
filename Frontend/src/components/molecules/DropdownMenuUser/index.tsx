@@ -51,7 +51,7 @@ export const DropdownMenuUser = () => {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            router.push("/orders");
+            router.push("/profile/orders");
           }}
         >
           Pesanan Saya

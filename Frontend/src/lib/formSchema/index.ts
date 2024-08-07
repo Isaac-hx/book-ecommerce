@@ -3,7 +3,16 @@ import { z } from "zod";
 export const loginFormSchema = z.object({
   email: z
     .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Email is invalid" }),
-  password: z.string().min(1, { message: "Password is required" }),
+    .min(1, { message: "Email harus diisi" })
+    .email({ message: "Email tidak valid" }),
+  password: z.string().min(1, { message: "Password harus diisi" }),
+});
+
+export const profileFormSchema = z.object({
+  id: z.number(),
+  first_name: z.string().min(1, { message: "Nama depan wajb diisi" }),
+  last_name: z.string(),
+  avatar_url: z.string(),
+  phone: z.string(),
+  address: z.string().min(1, { message: "Alamat wajb diisi" }),
 });
