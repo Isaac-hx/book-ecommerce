@@ -37,7 +37,8 @@ func GetListBooks(c *gin.Context) {
 	if category != "" {
 		// Filter buku berdasarkan kategori jika kategori disediakan
 		queryError = db.Preload("Categories").
-			Preload("Author"). // Preload Author
+			Preload("Author").
+			Preload("Stocks"). // Preload Author			// Preload Author
 			Joins("JOIN book_categories ON book_categories.book_id = books.id").
 			Joins("JOIN categories ON categories.id = book_categories.category_id").
 			Where("categories.name = ?", category).
@@ -49,7 +50,8 @@ func GetListBooks(c *gin.Context) {
 	} else {
 		// Jika kategori tidak disediakan, cari berdasarkan title saja
 		queryError = db.Preload("Categories").
-			Preload("Author"). // Preload Author
+			Preload("Author").
+			Preload("Stocks"). // Preload Author
 			Where("title LIKE ?", "%"+title+"%").
 			Order(fmt.Sprintf("%s %s", orderBy, sortBy)).
 			Limit(limit).
@@ -73,9 +75,11 @@ func GetListBooks(c *gin.Context) {
 	var booksData []struct {
 		ID       uint   `json:"id"`
 		Title    string `json:"title"`
-		Author   string `json:"author"`
+		Author   string `json:"author_name"`
 		Price    int    `json:"price"`
 		CoverURL string `json:"cover_url"`
+		Quantity uint `json:"quantity"`
+
 	}
 
 	// Loop through the listBooks and transform data into the new structure
@@ -83,15 +87,17 @@ func GetListBooks(c *gin.Context) {
 		booksData = append(booksData, struct {
 			ID       uint   `json:"id"`
 			Title    string `json:"title"`
-			Author   string `json:"author"`
+			Author   string `json:"author_name"`
 			Price    int    `json:"price"`
 			CoverURL string `json:"cover_url"`
+			Quantity   uint	`json:"quantity"`
 		}{
 			ID:       book.ID,
 			Title:    book.Title,
-			// Author:   book.Author.Model,
+			Author:   book.Author.Name,
 			Price:    book.Price,
 			CoverURL: book.CoverUrl,
+			Quantity: book.Stocks.Quantity,
 		})
 	}
 
@@ -108,7 +114,8 @@ func GetBookById(c *gin.Context){
 	var book models.Book
 	id:=c.Param("id")
 	query:=db.Preload("Categories").
-			Preload("Author"). // Preload Author
+			Preload("Author").
+			Preload("Stocks"). // Preload Author
 			Preload("Publisher").
 			Joins("JOIN book_categories ON book_categories.book_id = books.id").
 			Joins("JOIN categories ON categories.id = book_categories.category_id").
@@ -138,6 +145,7 @@ func GetBookById(c *gin.Context){
 		Price         int       `json:"price"`
 		AuthorName 	string		`json:"author_name"`
 		PublisherName	string	`json:"publisher_name"`
+		Quantity	uint	`json:"quantity"`
 		Category []models.Category `json:"category"`
 	}
 	bookData.Title = book.Title
@@ -149,9 +157,10 @@ func GetBookById(c *gin.Context){
 	bookData.Height = book.Height
 	bookData.Language = book.Language
 	bookData.Price = book.Price
-	// bookData.AuthorName = book.Author.Name
+	bookData.AuthorName = book.Author.Name
 	bookData.PublisherName = book.Publisher.Name
 	bookData.Category = book.Categories
+	bookData.Quantity = book.Stocks.Quantity
 	c.JSON(http.StatusOK,gin.H{
 		"data":bookData,
 	})

@@ -70,6 +70,7 @@ func ConnectDB() {
 		&models.Author{},
 		&models.Category{},
 		&models.BookCategory{},
+		&models.Stock{},
 		&models.Book{},
 		&models.User{},
 	)
