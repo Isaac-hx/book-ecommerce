@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -52,7 +53,7 @@ const RegisterForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleFormSubmit)}
-        className="max-w-md space-y-6"
+        className="max-w-md space-y-4"
       >
         <FormField
           control={form.control}
@@ -110,6 +111,12 @@ const RegisterForm = ({ onSuccess }: { onSuccess?: () => void }) => {
         <Button type="submit" disabled={isPending} className="w-full">
           {isPending ? "Proses..." : "Daftar"}
         </Button>
+        <p className="text-center text-sm">
+          Sudah mendaftar?{" "}
+          <Link href="/login" className="text-primary">
+            Masuk
+          </Link>
+        </p>
       </form>
     </Form>
   );

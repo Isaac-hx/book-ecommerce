@@ -37,13 +37,14 @@ export const Navbar = () => {
     clearAuth();
     router.push("/");
     cookies.remove("token");
-    toast.success("Logout Success");
+    cookies.remove("role");
+    toast.success("Berhasil keluar");
   };
 
   // TODO: Implement search input
 
   return (
-    <header className="sticky top-0 flex flex-col gap-y-4 bg-background p-2 shadow">
+    <header className="sticky top-0 z-10 flex flex-col gap-y-4 bg-background p-2 shadow">
       {/* Desktop */}
       <nav className="container hidden h-full items-center justify-between gap-4 md:flex">
         <Link href="/" className="text-2xl font-bold text-primary">

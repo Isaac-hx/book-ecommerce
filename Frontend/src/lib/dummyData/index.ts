@@ -13,12 +13,30 @@ export const book_categories = [
 
 export const categories = [
   {
-    id: 1,
-    name: "Fiction",
+    name: "Suspense & Thriller",
+    cover_url:
+      "https://via.placeholder.com/150x200.png?text=Suspense+%26+Thriller",
   },
   {
-    id: 2,
-    name: "Non-fiction",
+    name: "Social Media",
+    cover_url: "https://via.placeholder.com/150x200.png?text=Social+Media",
+  },
+  {
+    name: "Modern Fiction",
+    cover_url: "https://via.placeholder.com/150x200.png?text=Modern+Fiction",
+  },
+  {
+    name: "Fiction & Fantasy",
+    cover_url:
+      "https://via.placeholder.com/150x200.png?text=Fiction+%26+Fantasy",
+  },
+  {
+    name: "History",
+    cover_url: "https://via.placeholder.com/150x200.png?text=History",
+  },
+  {
+    name: "Religion",
+    cover_url: "https://via.placeholder.com/150x200.png?text=Religion",
   },
 ];
 
@@ -68,35 +86,173 @@ Siapa "monster" yang menembus ego!? Menuju hasil akhir duel melawan 3 pemain top
 export const books = [
   {
     id: 1,
-    title: "Book One lorem ipsum dolor sit amet",
-    description: "Description for Book One",
-    cover_url: "https://example.com/book1.jpg",
-    total_pages: 300,
-    weight: 0.5,
-    width: 15.0,
-    height: 23.0,
-    language: "English",
-    published_date: "2022-01-01T00:00:00Z",
-    price: 20000,
-    author_id: 1,
-    author: "Author One",
-    publisher_id: 1,
+    title: "Sebuah Seni untuk Bersikap Bodo Amat",
+    description:
+      "Buku ini mengajarkan kita bagaimana cara menerima diri kita sendiri dan tidak peduli dengan hal-hal yang tidak penting.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/sebuah_seni_untuk_bersikap_bodo_amat_hard_cover_font_revisi-1__w149_hauto.jpg",
+    total_pages: 246,
+    weight: 0.3,
+    width: 14.0,
+    height: 21.0,
+    language: "Indonesian",
+    published_date: "2018-01-01T00:00:00Z",
+    price: 70000,
+    author_name: "Mark Manson",
+    publisher_name: "Gramedia",
   },
   {
     id: 2,
-    title: "Book Two",
-    description: "Description for Book Two",
-    cover_url: "https://example.com/book2.jpg",
-    total_pages: 400,
-    weight: 0.6,
+    title: "Atomic Habits",
+    description:
+      "Buku ini menawarkan pendekatan yang mudah dipahami dan praktis untuk mengembangkan kebiasaan baik dan menghentikan kebiasaan buruk.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/9786020633176_.Atomic_Habit__w149_hauto.jpg",
+    total_pages: 306,
+    weight: 0.4,
+    width: 15.0,
+    height: 23.0,
+    language: "Indonesian",
+    published_date: "2019-09-01T00:00:00Z",
+    price: 90000,
+    author_name: "James Clear",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 3,
+    title: "Filosofi Teras",
+    description:
+      "Buku ini membahas tentang filosofi Stoic yang bisa membantu kita menghadapi masalah hidup dengan lebih bijak.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/img20220101_11444970__w149_hauto.jpg",
+    total_pages: 250,
+    weight: 0.35,
+    width: 14.5,
+    height: 21.5,
+    language: "Indonesian",
+    published_date: "2018-05-01T00:00:00Z",
+    price: 80000,
+    author_name: "Henry Manampiring",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 4,
+    title: "Rich Dad Poor Dad",
+    description:
+      "Buku ini mengajarkan tentang perbedaan pola pikir antara orang kaya dan orang miskin, serta bagaimana cara mencapai kebebasan finansial.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/9786020333175_rich-dad-poor-dad-_edisi-revisi___w149_hauto.jpg",
+    total_pages: 336,
+    weight: 0.5,
+    width: 14.8,
+    height: 22.8,
+    language: "Indonesian",
+    published_date: "2017-02-01T00:00:00Z",
+    price: 85000,
+    author_name: "Robert T. Kiyosaki",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 5,
+    title: "The Subtle Art of Not Giving a F*ck",
+    description:
+      "Buku ini mengajarkan kita bagaimana cara menerima diri kita sendiri dan tidak peduli dengan hal-hal yang tidak penting.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/THE-SUBTLE-ART-OF-NOT-GIVIN__w149_hauto.jpg",
+    total_pages: 224,
+    weight: 0.3,
+    width: 14.0,
+    height: 21.0,
+    language: "Indonesian",
+    published_date: "2017-09-01T00:00:00Z",
+    price: 75000,
+    author_name: "Mark Manson",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 6,
+    title: "The Power of Habit",
+    description:
+      "Buku ini membahas tentang kekuatan kebiasaan dan bagaimana kita bisa mengubah kebiasaan untuk mencapai kesuksesan.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/img20190902_16534294__w149_hauto.jpg",
+    total_pages: 371,
+    weight: 0.55,
     width: 15.5,
     height: 23.5,
-    language: "English",
-    published_date: "2022-02-01T00:00:00Z",
-    price: 25000,
-    author_id: 2,
-    author: "Author Two",
-    publisher_id: 2,
+    language: "Indonesian",
+    published_date: "2016-08-01T00:00:00Z",
+    price: 95000,
+    author_name: "Charles Duhigg",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 7,
+    title: "The Intelligent Investor",
+    description:
+      "Buku ini memberikan panduan investasi yang bijak dan berfokus pada investasi jangka panjang.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/9786027164116_the_intelligent_investor_hc___w149_hauto.jpeg",
+    total_pages: 640,
+    weight: 0.8,
+    width: 16.0,
+    height: 24.0,
+    language: "Indonesian",
+    published_date: "2015-03-01T00:00:00Z",
+    price: 120000,
+    author_name: "Benjamin Graham",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 8,
+    title: "Think and Grow Rich",
+    description:
+      "Buku ini memberikan berbagai prinsip dan strategi untuk mencapai kesuksesan finansial.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/9789792239393_think-and-grow-rich-cover-baru__w149_hauto.jpg",
+    total_pages: 320,
+    weight: 0.5,
+    width: 14.8,
+    height: 22.8,
+    language: "Indonesian",
+    published_date: "2014-07-01T00:00:00Z",
+    price: 85000,
+    author_name: "Napoleon Hill",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 9,
+    title: "How to Win Friends and Influence People",
+    description:
+      "Buku ini memberikan tips dan strategi untuk meningkatkan kemampuan interpersonal dan mempengaruhi orang lain.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/picture_meta/2023/5/31/3dswgqvlfhavyeenh59ivk__w149_hauto.jpg",
+    total_pages: 288,
+    weight: 0.45,
+    width: 15.0,
+    height: 23.0,
+    language: "Indonesian",
+    published_date: "2013-04-01T00:00:00Z",
+    price: 80000,
+    author_name: "Dale Carnegie",
+    publisher_name: "Gramedia",
+  },
+  {
+    id: 10,
+    title: "The 7 Habits of Highly Effective People",
+    description:
+      "Buku ini membahas tujuh kebiasaan utama yang dimiliki oleh orang-orang yang sangat efektif.",
+    cover_url:
+      "https://cdn.gramedia.com/uploads/items/9786027228955__w149_hauto.jpeg",
+    total_pages: 381,
+    weight: 0.6,
+    width: 15.2,
+    height: 23.2,
+    language: "Indonesian",
+    published_date: "2012-09-01T00:00:00Z",
+    price: 100000,
+    author_name: "Stephen R. Covey",
+    publisher_name: "Gramedia",
   },
 ];
 
