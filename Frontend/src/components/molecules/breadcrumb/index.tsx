@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Fragment } from "react";
 
 import {
   Breadcrumb as ShadCnBreadcrumb,
@@ -18,8 +19,8 @@ const Breadcrumb = ({ data }: IProps) => {
         {data.map((datum) => {
           const isLink = !!datum.href;
           return (
-            <>
-              <ShadCnBreadcrumbItem key={datum.label}>
+            <Fragment key={datum.label}>
+              <ShadCnBreadcrumbItem>
                 {!isLink && (
                   <ShadCnBreadcrumbPage>{datum.label}</ShadCnBreadcrumbPage>
                 )}
@@ -30,7 +31,7 @@ const Breadcrumb = ({ data }: IProps) => {
                 )}
               </ShadCnBreadcrumbItem>
               {isLink && <ShadCnBreadcrumbSeparator />}
-            </>
+            </Fragment>
           );
         })}
       </ShadCnBreadcrumbList>
