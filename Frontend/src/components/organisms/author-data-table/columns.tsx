@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/molecules/data-table-column-header";
 import { DataTableRowActions } from "@/components/molecules/data-table-row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { Category } from "@/services/category/types";
+import type { Author } from "@/services/author/types";
 
 type Params = {
   onDeleteButtonClick: (id: number) => void;
@@ -13,7 +13,7 @@ type Params = {
 
 export const getColumns = ({
   onDeleteButtonClick,
-}: Params): ColumnDef<Category>[] => [
+}: Params): ColumnDef<Author>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -57,7 +57,7 @@ export const getColumns = ({
     id: "actions",
     cell: ({ row }) => (
       <DataTableRowActions
-        updatePageUrl={`/admin/categories/update/${row.original.ID}`}
+        updatePageUrl={`/admin/authors/update/${row.original.ID}`}
         onDeleteButtonClick={() => onDeleteButtonClick(row.original.ID)}
       />
     ),
