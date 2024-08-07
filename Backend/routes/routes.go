@@ -13,6 +13,7 @@ import (
 	"Backend/handlers/categories"
 	"Backend/handlers/profiles"
 	"Backend/handlers/publishers"
+	"Backend/handlers/stocks"
 
 	"Backend/middlewares"
 )
@@ -91,6 +92,14 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
 	})
+
+	stockMiddlewareRoute:=r.Group("/stock")
+	stockMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	stockMiddlewareRoute.POST("",stocks.CreateStock)
+	stockMiddlewareRoute.PUT("/:id",stocks.UpdateStockbyId)
+	stockMiddlewareRoute.GET("",stocks.GetListStock)
+
+
 
 	return r
 }
