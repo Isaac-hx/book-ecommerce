@@ -15,6 +15,29 @@ func GetAllOrder(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Server Error"})
 		return
 	}
+	var dataOrder []struct{
+		ID		uint	`json:"id"`
+		StatusOrder string `json:"status_order"`
+		ProofPayment string `json:"proof_payment"`
+		PaymentMethodId int `json:"payment_method_id"`
+		
 
-	c.JSON(http.StatusOK, gin.H{"orders": orders})
+	}
+
+
+	for _,item := range orders{
+		dataOrder = append(dataOrder, struct{
+			ID		uint	`json:"id"`
+			StatusOrder string `json:"status_order"`
+			ProofPayment string `json:"proof_payment"`
+			PaymentMethodId int `json:"payment_method_id"`
+		}{
+			ID: item.ID,
+			StatusOrder: item.StatusOrder,
+			ProofPayment: item.ProofPayment,
+			PaymentMethodId: item.PaymentMethodID,
+		})
+		
+	}
+	c.JSON(http.StatusOK, gin.H{"orders": dataOrder})
 }

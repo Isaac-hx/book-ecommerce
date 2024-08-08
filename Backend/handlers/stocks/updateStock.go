@@ -11,6 +11,7 @@ import (
 func UpdateStockbyId(c *gin.Context){
 	db:=c.MustGet("db").(*gorm.DB)
 	id:=c.Param("id")
+	var stock models.Stock
 	var inputStock struct{
 		Quantity uint `json:"quantity"`
 	}
@@ -22,7 +23,7 @@ func UpdateStockbyId(c *gin.Context){
 		return
 	}
 
-	updateStock := db.Model(&models.Stock{}).Where("id = ?",id).Update("quantity",inputStock.Quantity)
+	updateStock := db.Model(&stock).Where("id = ?",id).Update("quantity",inputStock.Quantity)
 	if updateStock.Error != nil{
 		switch updateStock.Error{
 		case gorm.ErrRecordNotFound:
