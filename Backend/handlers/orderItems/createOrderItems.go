@@ -16,8 +16,8 @@ type OrderItemInput struct {
 }
 
 type CreateOrderRequest struct {
-	OrderItems    []OrderItemInput `json:"order_items"`
-	TransactionID string           `json:"transaction_id"`
+	OrderItems      []OrderItemInput `json:"order_items"`
+	PaymentMethodID uint             `json:"payment_method_id"`
 }
 
 func CreateOrderItem(c *gin.Context) {
@@ -29,13 +29,23 @@ func CreateOrderItem(c *gin.Context) {
 		return
 	}
 
-	var orderItems []models.OrderItem
+	// Create the order
+	order := models.Order{
+		StatusOrder:     "pending",
+		PaymentMethodID: request.PaymentMethodID,
+	}
 
+	if err := db.Create(&order).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	var orderItems []models.OrderItem
 	for _, item := range request.OrderItems {
 		orderItem := models.OrderItem{
 			TotalPrice:    item.TotalPrice,
 			QuantityTotal: item.QuantityTotal,
-			TransactionID: request.TransactionID,
+			OrderID:       order.ID, // Link to the newly created order
 			BookID:        item.BookID,
 			ProfileID:     item.ProfileID,
 		}
@@ -47,5 +57,5 @@ func CreateOrderItem(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "data berhasil dibuat"})
+	c.JSON(http.StatusOK, gin.H{"message": "order dan item berhasil dibuat", "order_id": order.ID})
 }

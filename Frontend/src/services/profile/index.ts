@@ -2,7 +2,7 @@ import { axiosInstance } from "@/lib/api";
 
 import { GetProfileByIdResponse, UpdateProfilePayload } from "./types";
 
-export const getProfileById = (id: string) => {
+export const getProfileById = (id: number) => {
   return axiosInstance.get<GetProfileByIdResponse>(`/profile/${id}`);
 };
 

@@ -9,6 +9,7 @@ export const loginFormSchema = z.object({
 });
 
 export const profileFormSchema = z.object({
+  id: z.number(),
   first_name: z.string().min(1, { message: "Nama depan wajb diisi" }),
   last_name: z.string(),
   avatar_url: z.string(),

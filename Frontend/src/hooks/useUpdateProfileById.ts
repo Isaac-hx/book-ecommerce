@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { updatePublisherById as updatePublisherByIdService } from "@/services/publisher";
+import { updateProfileById } from "@/services/profile";
 
 export const useUpdateProfileById = () => {
   return useMutation({
-    mutationFn: updatePublisherByIdService,
+    mutationFn: updateProfileById,
   });
 };
