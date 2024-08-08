@@ -14,47 +14,52 @@ import (
 func GetListBooks(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var listBooks []models.Book
-	var pageIndexInt = 0
-	var numberOfPages = 1
+	var totalData int64
 
 	pageIndex := c.DefaultQuery("page_index", "0")
-	if pageIndex != "0" {
-		pageIndexing, _ := strconv.Atoi(fmt.Sprintf("%s%s", pageIndex, "0"))
-		pageIndexInt += pageIndexing
-		numberOfPageIndexing, _ := strconv.Atoi(pageIndex)
-		numberOfPages += numberOfPageIndexing
-
-	}
+	pageIndexInt, _ := strconv.Atoi(pageIndex)
 	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+	offset := pageIndexInt * limit
+
 	orderBy := c.DefaultQuery("order_by", "price")
 	sortBy := c.DefaultQuery("sort_by", "desc")
 	title := c.DefaultQuery("title", "")
 	category := c.Query("category")
 
-	var queryError error
-
 	if category != "" {
-		// Filter buku berdasarkan kategori jika kategori disediakan
+		db.Model(&models.Book{}).
+			Joins("JOIN book_categories ON book_categories.book_id = books.id").
+			Joins("JOIN categories ON categories.id = book_categories.category_id").
+			Where("categories.name = ?", category).
+			Where("title LIKE ?", "%"+title+"%").
+			Count(&totalData)
+	} else {
+		db.Model(&models.Book{}).
+			Where("title LIKE ?", "%"+title+"%").
+			Count(&totalData)
+	}
+
+	var queryError error
+	if category != "" {
 		queryError = db.Preload("Categories").
 			Preload("Author").
-			Preload("Stocks"). // Preload Author			// Preload Author
+			Preload("Stocks").
 			Joins("JOIN book_categories ON book_categories.book_id = books.id").
 			Joins("JOIN categories ON categories.id = book_categories.category_id").
 			Where("categories.name = ?", category).
 			Where("title LIKE ?", "%"+title+"%").
 			Order(fmt.Sprintf("%s %s", orderBy, sortBy)).
 			Limit(limit).
-			Offset(pageIndexInt).
+			Offset(offset).
 			Find(&listBooks).Error
 	} else {
-		// Jika kategori tidak disediakan, cari berdasarkan title saja
 		queryError = db.Preload("Categories").
 			Preload("Author").
-			Preload("Stocks"). // Preload Author
+			Preload("Stocks").
 			Where("title LIKE ?", "%"+title+"%").
 			Order(fmt.Sprintf("%s %s", orderBy, sortBy)).
 			Limit(limit).
-			Offset(pageIndexInt).
+			Offset(offset).
 			Find(&listBooks).Error
 	}
 
@@ -71,6 +76,7 @@ func GetListBooks(c *gin.Context) {
 		})
 		return
 	}
+
 	var booksData []struct {
 		ID       uint   `json:"id"`
 		Title    string `json:"title"`
@@ -80,7 +86,6 @@ func GetListBooks(c *gin.Context) {
 		Quantity uint   `json:"quantity"`
 	}
 
-	// Loop through the listBooks and transform data into the new structure
 	for _, book := range listBooks {
 		booksData = append(booksData, struct {
 			ID       uint   `json:"id"`
@@ -99,13 +104,19 @@ func GetListBooks(c *gin.Context) {
 		})
 	}
 
+	// Kalkulasi total number of pages
+	totalPages := (int(totalData) + limit - 1) / limit
+
 	c.JSON(http.StatusOK, gin.H{
 		"data":            booksData,
-		"total_data":      len(booksData),
-		"page_index":      pageIndexInt,
-		"number_of_pages": numberOfPages,
+		"total_data":      totalData,  // Total jumlah buku sesuai pencarian
+		"total_pages":     totalPages, // Total halaman yang ada berdasarkan jumlah data
+		"current_page":    pageIndexInt + 1,
+		"page_size":       limit,
 	})
 }
+
+
 
 func GetBookById(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
