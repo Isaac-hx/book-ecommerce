@@ -62,5 +62,5 @@ func CreateBook(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": book})
+	c.JSON(http.StatusOK, gin.H{"message": "Data Books berhasil ditambahkan"})
 }

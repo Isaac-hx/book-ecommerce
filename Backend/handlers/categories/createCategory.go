@@ -10,6 +10,8 @@ import (
 
 type CategoryInput struct {
 	Name string `json:"name" binding:"required"`
+	CategoryCover string `json:"category_cover" binding:"required"`
+
 }
 
 func CreateCategory(c *gin.Context) {
@@ -21,7 +23,7 @@ func CreateCategory(c *gin.Context) {
 		return
 	}
 
-	category := models.Category{Name: input.Name}
+	category := models.Category{Name: input.Name,CategoryCover: input.CategoryCover}
 	db.Create(&category)
 
 	c.JSON(http.StatusOK, gin.H{"data": category})

@@ -76,5 +76,6 @@ func ConnectDB() {
 		&models.Profile{},
 		&models.Order{},
 		&models.OrderItem{},
+		&models.PaymentMethod{},
 	)
 }
