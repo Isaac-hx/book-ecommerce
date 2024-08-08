@@ -14,7 +14,7 @@ func UpdatePaymentById(c *gin.Context) {
 	var inputPaymentMethod struct{
 		Name string `json:"name"`
 		AccountNumber string `json:"account_number"`
-		AccountHolderName string `json:"account_holder_name"`
+		AccountHoldername string `json:"account_holder_name"`
 	}
 	err:= c.ShouldBindJSON(&inputPaymentMethod)
 	if err!=nil{
