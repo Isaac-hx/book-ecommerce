@@ -16,15 +16,16 @@ export default function BooksPage() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const currentPage = Number(searchParams.get("page")) || 0;
+  const currentPage = Number(searchParams.get("page")) || 1;
   const [page, setPage] = useState(currentPage);
 
   const { data, isLoading } = useQuery<GetBooksResponse>({
     queryKey: ["books", { page_index: currentPage }],
     queryFn: async () => {
       const response = await axiosInstance.get<GetBooksResponse>("/books", {
+        // currentPage - 2 karena response API untuk current page dimulai dari 0
         params: {
-          page_index: currentPage - 1,
+          page_index: currentPage - 2,
         },
       });
       return response.data;
