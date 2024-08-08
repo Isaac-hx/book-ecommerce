@@ -11,7 +11,7 @@ import { getColumns } from "./columns";
 
 const BookDataTable = () => {
   const router = useRouter();
-  const { data, refetch } = useGetBooks();
+  const { data, refetch } = useGetBooks({});
 
   const { mutateAsync } = useDeleteBookById();
 

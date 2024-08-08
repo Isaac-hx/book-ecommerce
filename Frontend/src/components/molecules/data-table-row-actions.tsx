@@ -14,7 +14,7 @@ import {
 
 interface DataTableRowActionsProps {
   updatePageUrl: string;
-  onDeleteButtonClick: () => void;
+  onDeleteButtonClick?: () => void;
 }
 
 export function DataTableRowActions({
@@ -39,11 +39,15 @@ export function DataTableRowActions({
             Ubah
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onDeleteButtonClick}>
-          <Trash2 className="mr-2 h-4 w-4" />
-          Hapus
-        </DropdownMenuItem>
+        {onDeleteButtonClick && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={onDeleteButtonClick}>
+              <Trash2 className="mr-2 h-4 w-4" />
+              Hapus
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

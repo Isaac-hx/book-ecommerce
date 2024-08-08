@@ -2,13 +2,22 @@ import { axiosInstance } from "@/lib/api";
 
 import {
   CreateBookPayload,
+  GetAllBookParams,
   GetBookByIdResponse,
   GetBooksResponse,
   UpdateBookPayload,
 } from "./types";
 
-export const getBooks = () => {
-  return axiosInstance.get<GetBooksResponse>("/books");
+export const getBooks = (params: GetAllBookParams) => {
+  return axiosInstance.get<GetBooksResponse>("/books", {
+    params: {
+      page_index: params.page_index,
+      limit: params.limit,
+      ...(params.order_by ? { order_by: params.order_by } : {}),
+      ...(params.sort_by ? { sort_by: params.sort_by } : {}),
+      ...(params.title ? { title: params.title } : {}),
+    } as GetAllBookParams,
+  });
 };
 
 export const createBook = (payload: CreateBookPayload) => {

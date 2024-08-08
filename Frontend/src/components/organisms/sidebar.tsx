@@ -1,6 +1,14 @@
 "use client";
 
-import { Book, BookCheck, House, ImagePlus, Tags, UserPen } from "lucide-react";
+import {
+  Book,
+  BookCheck,
+  House,
+  ImagePlus,
+  Package,
+  Tags,
+  UserPen,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -39,6 +47,11 @@ const menus = [
         path: "/admin/books",
         label: "Buku",
         icon: Book,
+      },
+      {
+        path: "/admin/stocks",
+        label: "Stok",
+        icon: Package,
       },
       {
         path: "/admin/imagetest",
