@@ -1,5 +1,5 @@
 import Breadcrumb from "@/components/molecules/breadcrumb";
-import AuthorDataTable from "@/components/organisms/author-data-table";
+import AuthorCreateForm from "@/components/organisms/author-create-form";
 
 const Page = () => {
   return (
@@ -7,11 +7,14 @@ const Page = () => {
       <Breadcrumb
         data={[
           { label: "Beranda", href: "/admin/home" },
-          { label: "Pengarang" },
+          { label: "Pengarang", href: "/admin/authors" },
+          { label: "Tambah Data" },
         ]}
       />
-      <h2 className="text-3xl font-bold tracking-tight">Pengarang</h2>
-      <AuthorDataTable />
+      <h2 className="text-3xl font-bold tracking-tight">
+        Tambah Data Pengarang
+      </h2>
+      <AuthorCreateForm />
     </main>
   );
 };
