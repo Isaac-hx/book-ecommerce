@@ -28,6 +28,7 @@ func UpdateCategory(c *gin.Context) {
 
 	var updatedInput models.Category
 	updatedInput.Name = input.Name
+	updatedInput.CategoryCover = input.CategoryCover
 	updatedInput.UpdatedAt = time.Now()
 
 	db.Model(&category).Updates(updatedInput)

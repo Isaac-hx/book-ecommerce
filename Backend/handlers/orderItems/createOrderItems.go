@@ -2,6 +2,7 @@ package orderItems
 
 import (
 	"Backend/models"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ type OrderItemInput struct {
 
 type CreateOrderRequest struct {
 	OrderItems      []OrderItemInput `json:"order_items"`
-	PaymentMethodID uint             `json:"payment_method_id"`
+	PaymentMethodID int             `json:"payment_method_id"`
 }
 
 func CreateOrderItem(c *gin.Context) {
@@ -30,10 +31,9 @@ func CreateOrderItem(c *gin.Context) {
 	}
 
 	// Create the order
-	order := models.Order{
-		StatusOrder:     "pending",
-		PaymentMethodID: request.PaymentMethodID,
-	}
+	var order models.Order
+	order.StatusOrder = "pending"
+	fmt.Println(order.StatusOrder,order.PaymentMethod,order.PaymentMethodID)
 
 	if err := db.Create(&order).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

@@ -12,6 +12,8 @@ import (
 	"Backend/handlers/books"
 	"Backend/handlers/categories"
 	"Backend/handlers/orderItems"
+	"Backend/handlers/orders"
+	"Backend/handlers/paymentMethods"
 	"Backend/handlers/profiles"
 	"Backend/handlers/publishers"
 	"Backend/handlers/stocks"
@@ -95,10 +97,25 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	stockMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	stockMiddlewareRoute.POST("", stocks.CreateStock)
 	stockMiddlewareRoute.PUT("/:id", stocks.UpdateStockbyId)
-	stockMiddlewareRoute.GET("", stocks.GetListStock)
+
+	// Public stock routes
+	r.GET("/stock", stocks.GetListStock)
+	r.GET("/stock/:id", stocks.GetStockById)
+
+	
+	r.POST("/create-orders",orderItems.CreateOrderItem) //dev state <- must be deleted
+	r.GET("/list-orders",orders.GetAllOrder)
+
+	paymentMethodMiddlewareRoute:=r.Group("/payment-method")
+	paymentMethodMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	paymentMethodMiddlewareRoute.POST("",paymentMethods.CreatePaymentMethod)
+	paymentMethodMiddlewareRoute.PUT("/:id",paymentMethods.UpdatePaymentById)
+	//public route for list payment method
+	r.GET("/payment-method",paymentMethods.GetAllPayment)
+	r.GET("/payment-method/:id",paymentMethods.GetPaymentById)
+
 
 	// Private Create Order routes with user middleware
-	r.POST("/create-orders",orderItems.CreateOrderItem)
 	createOrderMiddlewareRoute := r.Group("/create-order")
 	createOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
 	createOrderMiddlewareRoute.POST("", orderItems.CreateOrderItem)

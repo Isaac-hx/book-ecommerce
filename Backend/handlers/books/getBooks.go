@@ -14,24 +14,23 @@ import (
 func GetListBooks(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var listBooks []models.Book
-	var pageIndexInt =  0
+	var pageIndexInt = 0
 	var numberOfPages = 1
 
-	pageIndex:=c.DefaultQuery("page_index","0")
-	if pageIndex != "0"{
-		pageIndexing,_:=strconv.Atoi(fmt.Sprintf("%s%s",pageIndex,"0"))
-		pageIndexInt +=pageIndexing
-		numberOfPageIndexing,_:=strconv.Atoi(pageIndex)
-		numberOfPages+=numberOfPageIndexing
-		
+	pageIndex := c.DefaultQuery("page_index", "0")
+	if pageIndex != "0" {
+		pageIndexing, _ := strconv.Atoi(fmt.Sprintf("%s%s", pageIndex, "0"))
+		pageIndexInt += pageIndexing
+		numberOfPageIndexing, _ := strconv.Atoi(pageIndex)
+		numberOfPages += numberOfPageIndexing
+
 	}
-	limit,_:=strconv.Atoi(c.DefaultQuery("limit","10"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
 	orderBy := c.DefaultQuery("order_by", "price")
 	sortBy := c.DefaultQuery("sort_by", "desc")
 	title := c.DefaultQuery("title", "")
 	category := c.Query("category")
 
-	
 	var queryError error
 
 	if category != "" {
@@ -78,8 +77,7 @@ func GetListBooks(c *gin.Context) {
 		Author   string `json:"author_name"`
 		Price    int    `json:"price"`
 		CoverURL string `json:"cover_url"`
-		Quantity uint `json:"quantity"`
-
+		Quantity uint   `json:"quantity"`
 	}
 
 	// Loop through the listBooks and transform data into the new structure
@@ -90,7 +88,7 @@ func GetListBooks(c *gin.Context) {
 			Author   string `json:"author_name"`
 			Price    int    `json:"price"`
 			CoverURL string `json:"cover_url"`
-			Quantity   uint	`json:"quantity"`
+			Quantity uint   `json:"quantity"`
 		}{
 			ID:       book.ID,
 			Title:    book.Title,
@@ -102,57 +100,58 @@ func GetListBooks(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"data": booksData,
-		"total_data":len(booksData),
-		"page_index":pageIndexInt,
-		"number_of_pages":numberOfPages,
+		"data":            booksData,
+		"total_data":      len(booksData),
+		"page_index":      pageIndexInt,
+		"number_of_pages": numberOfPages,
 	})
 }
 
-func GetBookById(c *gin.Context){
+func GetBookById(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var book models.Book
-	id:=c.Param("id")
-	query:=db.Preload("Categories").
-			Preload("Author").
-			Preload("Stocks"). // Preload Author
-			Preload("Publisher").
-			Joins("JOIN book_categories ON book_categories.book_id = books.id").
-			Joins("JOIN categories ON categories.id = book_categories.category_id").
-			First(&book,id).Error
-		
-	if query !=nil{
-		switch query{
+	id := c.Param("id")
+	query := db.Preload("Categories").
+		Preload("Author").
+		Preload("Stocks"). // Preload Author
+		Preload("Publisher").
+		Joins("JOIN book_categories ON book_categories.book_id = books.id").
+		Joins("JOIN categories ON categories.id = book_categories.category_id").
+		First(&book, id).Error
+
+	if query != nil {
+		switch query {
 		case gorm.ErrRecordNotFound:
-			c.AbortWithStatusJSON(http.StatusNotFound,gin.H{"message":"Data tidak ditemukan"})
+			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Data tidak ditemukan"})
 			return
 		default:
-			c.AbortWithStatusJSON(http.StatusInternalServerError,gin.H{"message":"Server Error"})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Server Error"})
 			return
 		}
 	}
 
-	var bookData struct{
-		Title         string    `json:"title"`
-		Description   string    `json:"description"`
-		CoverUrl      string    `json:"cover_url"`
-		TotalPages    uint      `json:"total_pages"`
-		Weight        float32   `json:"weight"`
-		Width         float32   `json:"width"`
-		Height        float32   `json:"height"`
-		Language      string    `json:"language"`
-		PublishedDate time.Time `json:"published_date"`
-		Price         int       `json:"price"`
-		AuthorName 	string		`json:"author_name"`
-		PublisherName	string	`json:"publisher_name"`
-		Quantity	uint	`json:"quantity"`
-		Category []models.Category `json:"category"`
+	var bookData struct {
+		Title         string            `json:"title"`
+		Description   string            `json:"description"`
+		CoverUrl      string            `json:"cover_url"`
+		TotalPages    uint              `json:"total_pages"`
+		Weight        float32           `json:"weight"`
+		Width         float32           `json:"width"`
+		Height        float32           `json:"height"`
+		Language      string            `json:"language"`
+		PublishedDate time.Time         `json:"published_date"`
+		Price         int               `json:"price"`
+		AuthorName    string            `json:"author_name"`
+		PublisherName string            `json:"publisher_name"`
+		Quantity      uint              `json:"quantity"`
+		Category      []models.Category `json:"category"`
 	}
 	bookData.Title = book.Title
 	bookData.Description = book.Description
 	bookData.CoverUrl = book.CoverUrl
 	bookData.TotalPages = book.TotalPages
 	bookData.Weight = book.Weight
+	bookData.PublishedDate = book.PublishedDate
 	bookData.Width = book.Width
 	bookData.Height = book.Height
 	bookData.Language = book.Language
@@ -161,7 +160,7 @@ func GetBookById(c *gin.Context){
 	bookData.PublisherName = book.Publisher.Name
 	bookData.Category = book.Categories
 	bookData.Quantity = book.Stocks.Quantity
-	c.JSON(http.StatusOK,gin.H{
-		"data":bookData,
+	c.JSON(http.StatusOK, gin.H{
+		"data": bookData,
 	})
 }

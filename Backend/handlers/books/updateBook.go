@@ -43,10 +43,11 @@ func UpdateBook(c *gin.Context) {
 		Price:         input.Price,
 		AuthorID:      input.AuthorID,
 		PublisherID:   input.PublisherID,
-		Categories:    categories,
 	}
 
 	db.Model(&book).Updates(updatedBook)
 
-	c.JSON(http.StatusOK, gin.H{"message" : "data berhasil diubah"})
+	db.Model(&book).Association("Categories").Replace(categories)
+
+	c.JSON(http.StatusOK, gin.H{"message": "data berhasil diubah"})
 }
