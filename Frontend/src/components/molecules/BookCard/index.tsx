@@ -7,14 +7,14 @@ import { formatRupiah } from "@/lib/utils";
 type BookCardProps = {
   id: number;
   title: string;
-  author: string;
+  author_name: string;
   price: number;
   cover_url: string;
 };
 
 export const BookCard = ({
   id,
-  author,
+  author_name,
   title,
   price,
   cover_url,
@@ -34,7 +34,7 @@ export const BookCard = ({
       <div className="flex flex-col gap-1 text-center">
         <p className="line-clamp-2 font-semibold">{title}</p>
         <p className="line-clamp-1 text-xs font-light text-muted-foreground">
-          {author}
+          {author_name}
         </p>
       </div>
       <p className="text-center font-bold text-primary">

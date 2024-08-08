@@ -14,10 +14,17 @@ export type Book = {
 };
 
 export type GetBooksResponse = {
-  data: Book[];
-  number_of_pages: number;
-  page_index: number;
+  data: {
+    id: number;
+    title: "string";
+    author_name: string;
+    price: number;
+    cover_url: string;
+  }[];
+  current_page: number;
+  page_size: number;
   total_data: number;
+  total_pages: number;
 };
 
 export type GetBookByIdResponse = {
