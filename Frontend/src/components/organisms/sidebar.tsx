@@ -3,6 +3,7 @@
 import {
   Book,
   BookCheck,
+  CreditCard,
   House,
   ImagePlus,
   Package,
@@ -52,6 +53,11 @@ const menus = [
         path: "/admin/stocks",
         label: "Stok",
         icon: Package,
+      },
+      {
+        path: "/admin/payment-methods",
+        label: "Rekening",
+        icon: CreditCard,
       },
       {
         path: "/admin/imagetest",
