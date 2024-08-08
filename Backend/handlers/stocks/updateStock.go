@@ -8,17 +8,17 @@ import (
 	"gorm.io/gorm"
 )
 
-func UpdateStockbyId(c *gin.Context){
-	db:=c.MustGet("db").(*gorm.DB)
-	id:=c.Param("id")
+func UpdateStockbyId(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	id := c.Param("id")
 	var stock models.Stock
-	var inputStock struct{
+	var inputStock struct {
 		Quantity uint `json:"quantity"`
 	}
-	err:=c.ShouldBindBodyWithJSON(&inputStock)
-	if err != nil{
-		c.AbortWithStatusJSON(http.StatusBadRequest,gin.H{
-			"message":err.Error(),
+	err := c.ShouldBindBodyWithJSON(&inputStock)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
 		})
 		return
 	}
@@ -27,20 +27,20 @@ func UpdateStockbyId(c *gin.Context){
 	if updateStock.Error != nil{
 		switch updateStock.Error{
 		case gorm.ErrRecordNotFound:
-			c.AbortWithStatusJSON(http.StatusNotFound,gin.H{"message":"Data tidak ditemukan"})
+			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Data tidak ditemukan"})
 			return
 		default:
-			c.AbortWithStatusJSON(http.StatusInternalServerError,gin.H{"message":updateStock.Error.Error()})
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": updateStock.Error.Error()})
 			return
 		}
 
 	}
 
-	if updateStock.RowsAffected == 0{
-		c.AbortWithStatusJSON(http.StatusInternalServerError,gin.H{"message":"Data tidak terupdate"})
+	if updateStock.RowsAffected == 0 {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Data tidak terupdate"})
 		return
 	}
 
-	c.JSON(http.StatusOK,gin.H{"message":"Data berhasil di update"})
+	c.JSON(http.StatusOK, gin.H{"message": "Data berhasil di update"})
 
-}	
+}

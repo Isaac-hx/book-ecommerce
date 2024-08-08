@@ -97,7 +97,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	stockMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	stockMiddlewareRoute.POST("", stocks.CreateStock)
 	stockMiddlewareRoute.PUT("/:id", stocks.UpdateStockbyId)
-	stockMiddlewareRoute.GET("", stocks.GetListStock)
+
+	// Public stock routes
+	r.GET("/stock", stocks.GetListStock)
+	r.GET("/stock/:id", stocks.GetStockById)
 
 	
 	r.POST("/create-orders",orderItems.CreateOrderItem) //dev state <- must be deleted
