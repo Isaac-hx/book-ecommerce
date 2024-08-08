@@ -102,11 +102,14 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	
 	r.POST("/create-orders",orderItems.CreateOrderItem) //dev state <- must be deleted
 	r.GET("/list-orders",orders.GetAllOrder)
-	r.POST("/payment-method",paymentMethods.CreatePaymentMethod)
+
+	paymentMethodMiddlewareRoute:=r.Group("/payment-method")
+	paymentMethodMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	paymentMethodMiddlewareRoute.POST("/payment-method",paymentMethods.CreatePaymentMethod)
+	paymentMethodMiddlewareRoute.PUT("/payment-method/:id",paymentMethods.UpdatePaymentById)
+	//public route for list payment method
 	r.GET("/payment-method",paymentMethods.GetAllPayment)
 	r.GET("/payment-method/:id",paymentMethods.GetPaymentById)
-	r.PUT("/payment-method/:id",paymentMethods.UpdatePaymentById)
-
 
 
 	// Private Create Order routes with user middleware
