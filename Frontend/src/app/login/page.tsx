@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { decode } from "jsonwebtoken";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCookies } from "next-client-cookies";
@@ -34,7 +35,7 @@ import {
   AuthLoginResponse,
   RoleAvailable,
 } from "@/services/auth/types";
-import { useAuthStore } from "@/store";
+import { DecodedToken, useAuthStore } from "@/store";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function LoginPage() {
   });
 
   const cookies = useCookies();
-  const { setToken, setRole } = useAuthStore((state) => state);
+  const { setToken, setRole, setUser } = useAuthStore((state) => state);
 
   const login = async (values: z.infer<typeof loginFormSchema>) => {
     const { data: response } = await axiosInstance.post("/login", values);
@@ -58,6 +59,7 @@ export default function LoginPage() {
       cookies.set("role", data.role);
       setToken(data.token);
       setRole(data.role as RoleAvailable);
+      setUser(decode(data.token) as DecodedToken);
       if (data.role === "admin") {
         router.push("/admin/home");
       } else {

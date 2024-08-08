@@ -68,6 +68,12 @@
   }
 }
 
+@layer components {
+  .required {
+    @apply after:content-["_*"];
+  }
+}
+
 /* used for removing arrow from number input */
 .hide-arrow[type="number"]::-webkit-inner-spin-button,
 .hide-arrow[type="number"]::-webkit-outer-spin-button {
