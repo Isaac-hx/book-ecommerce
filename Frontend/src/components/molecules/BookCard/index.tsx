@@ -7,14 +7,14 @@ import { formatRupiah } from "@/lib/utils";
 type BookCardProps = {
   id: number;
   title: string;
-  author: string;
+  author_name: string;
   price: number;
   cover_url: string;
 };
 
 export const BookCard = ({
   id,
-  author,
+  author_name,
   title,
   price,
   cover_url,
@@ -22,20 +22,24 @@ export const BookCard = ({
   return (
     <Link
       href={`/books/${id}`}
-      className="flex max-h-[445px] w-full max-w-[212px] flex-col gap-4 rounded-lg p-2 transition-all hover:shadow hover:shadow-foreground"
+      className="flex max-h-[445px] w-full max-w-[230px] flex-col gap-4 rounded-lg"
     >
       <Image
         src={cover_url}
         alt={title}
-        width={212}
-        height={330}
-        className="h-[330px] w-full object-cover"
+        width={230}
+        height={290}
+        className="h-[290px] w-full bg-background object-cover p-8 shadow-md shadow-secondary"
       />
-      <div className="flex flex-col">
-        <p className="text-sm font-light">{author}</p>
+      <div className="flex flex-col gap-1 text-center">
         <p className="line-clamp-2 font-semibold">{title}</p>
+        <p className="line-clamp-1 text-xs font-light text-muted-foreground">
+          {author_name}
+        </p>
       </div>
-      <p className="font-bold text-primary">{formatRupiah(price)}</p>
+      <p className="text-center font-bold text-primary">
+        {formatRupiah(price)}
+      </p>
     </Link>
   );
 };
