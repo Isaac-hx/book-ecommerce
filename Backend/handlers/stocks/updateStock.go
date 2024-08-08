@@ -23,9 +23,9 @@ func UpdateStockbyId(c *gin.Context) {
 		return
 	}
 
-	updateStock := db.Model(&stock).Where("id = ?", id).Update("quantity", inputStock.Quantity)
-	if updateStock.Error != nil {
-		switch updateStock.Error {
+	updateStock := db.Model(&stock).Where("id = ?",id).Update("quantity",inputStock.Quantity)
+	if updateStock.Error != nil{
+		switch updateStock.Error{
 		case gorm.ErrRecordNotFound:
 			c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "Data tidak ditemukan"})
 			return
