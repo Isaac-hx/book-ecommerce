@@ -8,6 +8,9 @@ const nextConfig = {
       {
         hostname: "cdn.gramedia.com",
       },
+      {
+        hostname: "firebasestorage.googleapis.com",
+      },
     ],
   },
 };

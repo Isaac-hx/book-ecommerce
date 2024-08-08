@@ -53,7 +53,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-full max-w-52 space-y-4 border-r py-4">
+    <aside className="hidden w-full max-w-52 space-y-4 border-r py-4 lg:block">
       {menus.map((menu) => {
         return (
           <div className="px-3 py-2" key={menu.label}>
