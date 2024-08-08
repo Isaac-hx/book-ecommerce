@@ -98,6 +98,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	stockMiddlewareRoute.GET("", stocks.GetListStock)
 
 	// Private Create Order routes with user middleware
+	r.POST("/create-orders",orderItems.CreateOrderItem)
 	createOrderMiddlewareRoute := r.Group("/create-order")
 	createOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
 	createOrderMiddlewareRoute.POST("", orderItems.CreateOrderItem)
