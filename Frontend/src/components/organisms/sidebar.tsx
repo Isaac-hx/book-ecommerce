@@ -1,6 +1,14 @@
 "use client";
 
-import { Book, BookCheck, House, ImagePlus, Tags, UserPen } from "lucide-react";
+import {
+  Book,
+  BookCheck,
+  House,
+  ImagePlus,
+  Package,
+  Tags,
+  UserPen,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -41,6 +49,11 @@ const menus = [
         icon: Book,
       },
       {
+        path: "/admin/stocks",
+        label: "Stok",
+        icon: Package,
+      },
+      {
         path: "/admin/imagetest",
         label: "Image Test",
         icon: ImagePlus,
@@ -53,7 +66,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-full max-w-52 space-y-4 border-r py-4">
+    <aside className="hidden w-full max-w-52 space-y-4 border-r py-4 lg:block">
       {menus.map((menu) => {
         return (
           <div className="px-3 py-2" key={menu.label}>

@@ -5,7 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/molecules/data-table-column-header";
 import { DataTableRowActions } from "@/components/molecules/data-table-row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { Category } from "@/services/categories/types";
+import type { Category } from "@/services/category/types";
 
 type Params = {
   onDeleteButtonClick: (id: number) => void;

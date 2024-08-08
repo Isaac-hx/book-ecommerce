@@ -74,6 +74,7 @@ func ConnectDB() {
 		&models.Book{},
 		&models.User{},
 		&models.Profile{},
+		&models.Order{},
 		&models.OrderItem{},
 	)
 }

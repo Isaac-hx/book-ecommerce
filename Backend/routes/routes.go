@@ -35,11 +35,11 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		c.Set("db", db)
 	})
 
-	// Auth routes
+	// Public Auth routes
 	r.POST("/register", auths.Register)
 	r.POST("/login", auths.Login)
 
-	// Book routes with admin middleware
+	// Private Book routes with admin middleware
 	bookMiddlewareRoute := r.Group("/books")
 	bookMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	bookMiddlewareRoute.POST("", books.CreateBook)
@@ -49,42 +49,37 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public book routes
 	r.GET("/books", books.GetListBooks)
 	r.GET("/books/:id", books.GetBookById)
-	r.POST("/create-order", orderItems.CreateOrderItem)
 
-	// Category routes with admin middleware
+	// Private Category routes with admin middleware
 	categoryMiddlewareRoute := r.Group("/category")
 	categoryMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	categoryMiddlewareRoute.POST("", categories.CreateCategory)
 	categoryMiddlewareRoute.DELETE("/:id", categories.DeleteCategory)
 	categoryMiddlewareRoute.PUT("/:id", categories.UpdateCategory)
 
-	// Private profile route
+	// Public category routes
+	r.GET("/category", categories.GetAllCategory)
+	r.GET("/category/:id", categories.GetCategoryById)
+
+	// Private profile routes with user middleware
 	profileMiddlewareRoute := r.Group("/profile")
 	profileMiddlewareRoute.Use(middlewares.UserMiddleware())
 	profileMiddlewareRoute.PUT("/:id", profiles.UpdateProfileById)
+	profileMiddlewareRoute.GET("", profiles.GetAllProfiles)
+	profileMiddlewareRoute.GET("/:id", profiles.GetProfileByID)
 
-	// Public profile routes
-	r.GET("/profile/", profiles.GetAllProfiles)
-	r.GET("/profile/:id", profiles.GetProfileByID)
-
-
-	// Public category routes
-	r.GET("/category", categories.GetAllCategory)
-	//r.GET("/category/:id", categories.GetCategoryById)
-
-	// Author routes with admin middleware
+	// Private Author routes with admin middleware
 	authorMiddlewareRoute := r.Group("/author")
 	authorMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	authorMiddlewareRoute.POST("", authors.CreateAuthor)
 	authorMiddlewareRoute.DELETE("/:id", authors.DeleteAuthor)
 	authorMiddlewareRoute.PUT("/:id", authors.UpdateAuthor)
 
-	
 	// Public author routes
 	r.GET("/author", authors.GetAllAuthors)
 	r.GET("/author/:id", authors.GetAuthorById)
 
-	// publisher routes with admin middleware
+	// Private publisher routes with admin middleware
 	publisherMidldlewareRoute := r.Group("/publisher")
 	publisherMidldlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	publisherMidldlewareRoute.POST("", publishers.CreatePublisher)
@@ -94,18 +89,24 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public publisher routes
 	r.GET("/publisher", publishers.GetAllPublisher)
 	r.GET("/publisher/:id", publishers.GetPublisherById)
-	// Admin dashboard route
+
+	// Private stock routes with admin middleware
+	stockMiddlewareRoute := r.Group("/stock")
+	stockMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	stockMiddlewareRoute.POST("", stocks.CreateStock)
+	stockMiddlewareRoute.PUT("/:id", stocks.UpdateStockbyId)
+	stockMiddlewareRoute.GET("", stocks.GetListStock)
+
+	// Private Create Order routes with user middleware
+	r.POST("/create-orders",orderItems.CreateOrderItem)
+	createOrderMiddlewareRoute := r.Group("/create-order")
+	createOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
+	createOrderMiddlewareRoute.POST("", orderItems.CreateOrderItem)
+
+	// Admin dashboard route with admin middleware
 	r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
 	})
-
-	stockMiddlewareRoute:=r.Group("/stock")
-	stockMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
-	stockMiddlewareRoute.POST("",stocks.CreateStock)
-	stockMiddlewareRoute.PUT("/:id",stocks.UpdateStockbyId)
-	stockMiddlewareRoute.GET("",stocks.GetListStock)
-
-
 
 	return r
 }
