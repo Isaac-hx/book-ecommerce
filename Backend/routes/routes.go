@@ -105,6 +105,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.POST("/create-orders", orderItems.CreateOrderItem)       //dev state <- must be deleted
 	r.GET("/get-order-item", orderItems.GetAllOrderItems)      //dev state <- must be deleted
 	r.GET("/get-order-item/:id", orderItems.GetOrderItemsById) //dev state <- must be deleted
+	r.PUT("/order-item/:order-item-id", orderItems.UpdateOrderItemById)
 
 	r.GET("/list-orders", orders.GetAllOrder)
 
@@ -121,6 +122,11 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	createOrderMiddlewareRoute := r.Group("/create-order")
 	createOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
 	createOrderMiddlewareRoute.POST("", orderItems.CreateOrderItem)
+
+	// // Private Update Order routes with user middleware
+	// updateOrderMiddlewareRoute := r.Group("/update-order")
+	// updateOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
+	// updateOrderMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById)
 
 	// Private Change password routes with user middleware
 	changePasswordMiddlewareRoute := r.Group("/change-password")

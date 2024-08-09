@@ -33,6 +33,7 @@ func CreateOrderItem(c *gin.Context) {
 	// Create the order
 	var order models.Order
 	order.StatusOrder = "pending"
+	order.PaymentMethodID = 1
 	fmt.Println(order.StatusOrder,order.PaymentMethod,order.PaymentMethodID)
 
 	if err := db.Create(&order).Error; err != nil {
