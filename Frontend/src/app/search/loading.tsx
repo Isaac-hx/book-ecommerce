@@ -2,7 +2,7 @@ import React from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const BookSkeleton = () => {
+const Loading = () => {
   return (
     <div className="container flex min-h-screen flex-col gap-12 p-12">
       <div className="mx-auto grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -23,3 +23,5 @@ export const BookSkeleton = () => {
     </div>
   );
 };
+
+export default Loading;

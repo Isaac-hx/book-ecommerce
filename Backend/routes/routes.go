@@ -105,6 +105,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.POST("/create-orders", orderItems.CreateOrderItem)       //dev state <- must be deleted
 	r.GET("/get-order-item", orderItems.GetAllOrderItems)      //dev state <- must be deleted
 	r.GET("/get-order-item/:id", orderItems.GetOrderItemsById) //dev state <- must be deleted
+	r.PUT("/order-item/:order-item-id", orderItems.UpdateOrderItemById)
 
 
 	paymentMethodMiddlewareRoute := r.Group("/payment-method")

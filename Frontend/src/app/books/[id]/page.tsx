@@ -5,17 +5,28 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { book } from "@/lib/dummyData";
+import { useGetBookById } from "@/hooks/useGetBookById";
 import {
   formatCentimeter,
   formatDate,
   formatKilogram,
   formatRupiah,
 } from "@/lib/utils";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
-export default function DetailBookPage() {
+type DetailBookPageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default function DetailBookPage({
+  params: { id },
+}: DetailBookPageProps) {
   const [showDescription, setShowDescription] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  const { data: book, isLoading, error } = useGetBookById(id);
 
   const decrementQuantity = () => {
     if (quantity > 1) {
@@ -31,6 +42,8 @@ export default function DetailBookPage() {
     setShowDescription((prev) => !prev);
   };
 
+  if (isLoading) return <LoadingSpinner />;
+
   // TODO: implement API cart
 
   return (
@@ -38,8 +51,12 @@ export default function DetailBookPage() {
       <div className="flex flex-col justify-center gap-8 md:flex-row">
         <div className="flex items-center justify-center md:w-fit md:items-start">
           <Image
-            src={book.cover_url}
-            alt={book.title}
+            src={
+              book?.data.data.cover_url
+                ? book?.data.data.cover_url
+                : "https://via.placeholder.com/165x200.png"
+            }
+            alt={book?.data.data.title ?? "Cover Buku"}
             width={165}
             height={200}
             className="w-full rounded border object-contain p-4"
@@ -47,15 +64,17 @@ export default function DetailBookPage() {
         </div>
         <div className="flex flex-col gap-4 md:w-2/4">
           <div className="mb-4 flex flex-col gap-1">
-            <p className="text-muted-foreground">{book.author}</p>
-            <p className="text-xl font-bold">{book.title}</p>
+            <p className="text-muted-foreground">
+              {book?.data.data.author_name}
+            </p>
+            <p className="text-xl font-bold">{book?.data.data.title}</p>
           </div>
           <div className="flex flex-col gap-1">
             <p className="font-bold">Deskripsi Buku</p>
             <p
               className={`text-justify text-sm tracking-wide ${showDescription ? "line-clamp-none" : "line-clamp-5"}`}
             >
-              {book.description}
+              {book?.data.data.description ?? "-"}
             </p>
             <button
               className="w-fit text-sm text-primary"
@@ -71,43 +90,61 @@ export default function DetailBookPage() {
                 <p className="text-sm font-medium text-muted-foreground">
                   Jumlah Halaman
                 </p>
-                <p className="text-sm">{book.total_pages}</p>
+                <p className="text-sm">{book?.data.data.total_pages ?? "-"}</p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Penerbit
                 </p>
-                <p className="text-sm">{book.publisher}</p>
+                <p className="text-sm">
+                  {book?.data.data.publisher_name ?? "-"}
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Tanggal Terbit
                 </p>
-                <p className="text-sm">{formatDate(book.published_date)}</p>
+                <p className="text-sm">
+                  {book?.data.data.published_date
+                    ? formatDate(book?.data.data.published_date)
+                    : "-"}
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Berat
                 </p>
-                <p className="text-sm">{formatKilogram(book.weight)}</p>
+                <p className="text-sm">
+                  {book?.data.data.weight
+                    ? formatKilogram(book?.data.data.weight)
+                    : "-"}
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Lebar
                 </p>
-                <p className="text-sm">{formatCentimeter(book.width)}</p>
+                <p className="text-sm">
+                  {book?.data.data.width
+                    ? formatCentimeter(book?.data.data.width)
+                    : "-"}
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Panjang
                 </p>
-                <p className="text-sm">{formatCentimeter(book.height)}</p>
+                <p className="text-sm">
+                  {book?.data.data.height
+                    ? formatCentimeter(book?.data.data.height)
+                    : "-"}
+                </p>
               </div>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">
                   Bahasa
                 </p>
-                <p className="text-sm">{book.language}</p>
+                <p className="text-sm">{book?.data.data.language ?? "-"}</p>
               </div>
             </div>
           </div>
@@ -146,7 +183,7 @@ export default function DetailBookPage() {
           <div className="flex justify-between">
             <p className="font-bold text-muted-foreground">Subtotal</p>
             <p className="font-bold text-primary">
-              {formatRupiah(book.price * quantity)}
+              {formatRupiah(book?.data.data.price! * quantity)}
             </p>
           </div>
           <Button>

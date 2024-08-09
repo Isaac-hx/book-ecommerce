@@ -32,7 +32,13 @@ func CreateOrderItem(c *gin.Context) {
 	// Create the order
 	var order models.Order
 	order.StatusOrder = "pending"
+<<<<<<< HEAD
 	order.PaymentMethodID = 1 //default paymentmethod
+=======
+	order.PaymentMethodID = 1
+	fmt.Println(order.StatusOrder,order.PaymentMethod,order.PaymentMethodID)
+
+>>>>>>> 6ecb19522f8d4f1e8464ba792ce9c43c7c6afde2
 	if err := db.Create(&order).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
