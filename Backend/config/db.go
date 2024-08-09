@@ -21,7 +21,7 @@ var DB *gorm.DB
 
 // function mengkoneksikan ke database
 func ConnectDB() {
-	err:=godotenv.Load()
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
@@ -37,7 +37,7 @@ func ConnectDB() {
 		host := utils.Getenv("HOST", "127.0.0.1")
 		port := utils.Getenv("PORT", "3306")
 
-		dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", "root", "s4k4m4t4Chl03", host, port, database)
+		dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", "root", "", host, port, database)
 		dbGorm, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 		if err != nil {

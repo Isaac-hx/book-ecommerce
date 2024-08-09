@@ -7,15 +7,28 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { books, categories } from "@/lib/dummyData";
-import {
-  best_selling,
-  new_arrivals,
-  recommended_books,
-} from "@/lib/dummyData/books.json";
+import { GetBooksResponse } from "@/services/book/types";
+import { GetCategoriesResponse } from "@/services/category/types";
 
 // TODO: implement landing page
-export default function Home() {
+const getBooks = async (): Promise<GetBooksResponse> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/books?limit=15`,
+  );
+  return response.json();
+};
+
+const getCategories = async (): Promise<GetCategoriesResponse> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/category`,
+  );
+  return response.json();
+};
+
+export default async function Home() {
+  const books = await getBooks();
+  const categories = await getCategories();
+
   return (
     <div className="container flex min-h-screen flex-col gap-12 p-12">
       <div className="w-full rounded bg-gradient-to-l from-blue-100 via-blue-300 to-primary p-4 shadow md:h-96">
@@ -26,7 +39,7 @@ export default function Home() {
           }}
         >
           <CarouselContent>
-            {books.map((book) => (
+            {books.data.slice(0, 3).map((book) => (
               <CarouselItem key={book.title}>
                 <Hero {...book} />
               </CarouselItem>
@@ -45,12 +58,12 @@ export default function Home() {
           }}
         >
           <CarouselContent>
-            {categories.map((book) => (
+            {categories.data.map((category) => (
               <CarouselItem
-                key={book.name}
+                key={category.name}
                 className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
-                <CategoryCard {...book} />
+                <CategoryCard {...category} />
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -59,17 +72,17 @@ export default function Home() {
         </Carousel>
       </div>
       <BookSection href="/books" title="Rekomendasi Untukmu">
-        {recommended_books.map((book) => (
+        {books.data.slice(0, 5).map((book) => (
           <BookCard key={book.title} {...book} />
         ))}
       </BookSection>
       <BookSection href="/books" title="Buku-Buku Terbaru">
-        {new_arrivals.map((book) => (
+        {books.data.slice(5, 10).map((book) => (
           <BookCard key={book.title} {...book} />
         ))}
       </BookSection>
       <BookSection href="/books" title="Buku-Buku Terpopuler">
-        {best_selling.map((book) => (
+        {books.data.slice(10, 15).map((book) => (
           <BookCard key={book.title} {...book} />
         ))}
       </BookSection>
