@@ -5,7 +5,7 @@ import {
   BookCheck,
   CreditCard,
   House,
-  ImagePlus,
+  NotebookPen,
   Package,
   Tags,
   UserPen,
@@ -59,10 +59,15 @@ const menus = [
         label: "Rekening",
         icon: CreditCard,
       },
+    ],
+  },
+  {
+    label: "Transaksi",
+    children: [
       {
-        path: "/admin/imagetest",
-        label: "Image Test",
-        icon: ImagePlus,
+        path: "/admin/orders",
+        label: "Pesanan",
+        icon: NotebookPen,
       },
     ],
   },

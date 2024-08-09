@@ -4,6 +4,7 @@ export type Category = {
   UpdatedAt: string;
   DeletedAt: string | null;
   name: string;
+  category_cover: string;
   Books: null;
 };
 
@@ -17,6 +18,7 @@ export type GetCategoryByIdResponse = {
 
 export type CreateCategoryPayload = {
   name: string;
+  category_cover: string;
 };
 
 export type UpdateCategoryPayload = CreateCategoryPayload & { id: string };
