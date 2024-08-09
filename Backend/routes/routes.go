@@ -107,8 +107,8 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	paymentMethodMiddlewareRoute := r.Group("/payment-method")
 	paymentMethodMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
-	paymentMethodMiddlewareRoute.POST("/payment-method", paymentMethods.CreatePaymentMethod)
-	paymentMethodMiddlewareRoute.PUT("/payment-method/:id", paymentMethods.UpdatePaymentById)
+	paymentMethodMiddlewareRoute.POST("",paymentMethods.CreatePaymentMethod)
+	paymentMethodMiddlewareRoute.PUT("/:id",paymentMethods.UpdatePaymentById)
 
 	//public route for list payment method
 	r.GET("/payment-method", paymentMethods.GetAllPayment)
