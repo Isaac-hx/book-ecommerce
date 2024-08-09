@@ -1,6 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 
 import { DataTableColumnHeader } from "@/components/molecules/data-table-column-header";
 import { DataTableRowActions } from "@/components/molecules/data-table-row-actions";
@@ -35,6 +36,26 @@ export const getColumns = ({
         className="translate-y-[2px]"
       />
     ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "category_cover",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Sampul" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <Image
+          src={row.getValue("category_cover")}
+          width={64}
+          height={98}
+          alt={row.getValue("name")}
+          className="h-[98px] w-[64px] object-contain"
+          priority
+        />
+      );
+    },
     enableSorting: false,
     enableHiding: false,
   },

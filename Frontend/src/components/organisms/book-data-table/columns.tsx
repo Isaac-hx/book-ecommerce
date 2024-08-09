@@ -49,10 +49,10 @@ export const getColumns = ({
       return (
         <Image
           src={row.getValue("cover_url")}
-          width={50}
-          height={50}
+          width={64}
+          height={98}
           alt={row.getValue("title")}
-          className="h-auto w-auto"
+          className="h-[98px] w-[64px] object-contain"
           priority
         />
       );

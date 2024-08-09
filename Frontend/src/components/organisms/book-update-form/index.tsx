@@ -155,7 +155,6 @@ const BookUpdateForm = ({ id }: { id: string }) => {
                   disabled={isLoading}
                   {...field}
                   onChange={(e) => onChange(e.target.files?.[0] ?? undefined)}
-                  required
                 />
               </FormControl>
               <FormMessage />
