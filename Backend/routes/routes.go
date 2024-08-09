@@ -66,7 +66,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Private profile routes with user middleware
 	profileMiddlewareRoute := r.Group("/profile")
 	profileMiddlewareRoute.Use(middlewares.UserMiddleware())
-	profileMiddlewareRoute.PUT("/:id", profiles.UpdateProfileById)
+	profileMiddlewareRoute.PUT("", profiles.UpdateProfile)
 	profileMiddlewareRoute.GET("", profiles.GetAllProfiles)
 	profileMiddlewareRoute.GET("/:id", profiles.GetProfileByID)
 
