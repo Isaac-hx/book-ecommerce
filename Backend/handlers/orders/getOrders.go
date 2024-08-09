@@ -61,8 +61,7 @@ func GetOrderByIdAdmin(c *gin.Context){
 		}
 	}
 	var dataBookId []uint
-	dataOrderItems:= dataOrder.OrderItems
-	for _,item := range dataOrderItems{
+	for _,item := range dataOrder.OrderItems{
 		dataBookId = append(dataBookId, item.BookID)
 
 	}
@@ -78,20 +77,43 @@ func GetOrderByIdAdmin(c *gin.Context){
 		c.AbortWithStatusJSON(http.StatusNotFound,gin.H{"message":queryProfileOrder.Error()})
 		return
 	}
+	type BookWithStock struct{
+		ID uint `json:"book_id"`
+		Title string `json:"title"`
+		CoverUrl string `json:"cover_url"`
+		Price int `json:"price"`
+		QuantityTotal uint `json:"quantity_total"`
+	}
+
+	var listBookWithStock []BookWithStock
+
+	for index,item:=range dataOrder.OrderItems{
+		dataUpdated:=BookWithStock{
+			ID: listBookID[index].ID,
+			Title: listBookID[index].Title,
+			CoverUrl: listBookID[index].CoverUrl,
+			Price: listBookID[index].Price,
+			QuantityTotal: item.QuantityTotal,
+		}
+		listBookWithStock = append(listBookWithStock, dataUpdated)
+	}
 	var dataOrderById struct{
 		ID uint `json:"order_id"`
 		StatusOrder string `json:"status_order"`
 		PaymentMethodName string `json:"payment_method_name"`
 		ProofPayment string `json:"proof_payment"`
 		Profile  models.Profile	`json:"profile_order"`
-		BookOrder []models.Book `json:"book_order"`
+		//BookOrder []models.Book `json:"book_order"`
+		BookWithStocks []BookWithStock `json:"book_order"`
 		
 
 	}
 	dataOrderById.ID=dataOrder.ID
 	dataOrderById.StatusOrder = dataOrder.StatusOrder
-	dataOrderById.PaymentMethodName = dataOrder.ProofPayment
+	dataOrderById.PaymentMethodName = dataOrder.PaymentMethod.Name
 	dataOrderById.Profile = profileOrder
-	dataOrderById.BookOrder  =listBookID
+	dataOrderById.BookWithStocks = listBookWithStock
+	// dataOrderById.BookOrder  =listBookID
+	// dataOrderById.TotalPrice = dataOrder.
 	c.JSON(http.StatusOK,gin.H{"data":dataOrderById})
 }
