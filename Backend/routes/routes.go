@@ -102,10 +102,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.GET("/stock", stocks.GetListStock)
 	r.GET("/stock/:id", stocks.GetStockById)
 
-	r.POST("/create-orders", orderItems.CreateOrderItem)       //dev state <- must be deleted
-	r.GET("/get-order-item", orderItems.GetAllOrderItems)      //dev state <- must be deleted
-	r.GET("/get-order-item/:id", orderItems.GetOrderItemsById) //dev state <- must be deleted
-	r.PUT("/order-item/:order-item-id", orderItems.UpdateOrderItemById)
+	// r.POST("/create-orders", orderItems.CreateOrderItem)       //dev state <- must be deleted
+	// r.GET("/get-order-item", orderItems.GetAllOrderItems)      //dev state <- must be deleted
+	// r.GET("/get-order-item/:id", orderItems.GetOrderItemsById) //dev state <- must be deleted
+	// r.PUT("/order-item/:order-item-id", orderItems.UpdateOrderItemById) //dev state <- must be deleted
 
 	r.GET("/list-orders", orders.GetAllOrder)
 
@@ -114,19 +114,19 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	paymentMethodMiddlewareRoute.POST("", paymentMethods.CreatePaymentMethod)
 	paymentMethodMiddlewareRoute.PUT("/:id", paymentMethods.UpdatePaymentById)
 
-	//public route for list payment method
+	// Public route for list payment method
 	r.GET("/payment-method", paymentMethods.GetAllPayment)
 	r.GET("/payment-method/:id", paymentMethods.GetPaymentById)
 
 	// Private Create Order routes with user middleware
-	createOrderMiddlewareRoute := r.Group("/create-order")
-	createOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
-	createOrderMiddlewareRoute.POST("", orderItems.CreateOrderItem)
+	OrderItemsMiddlewareRoute := r.Group("/order-items")
+	OrderItemsMiddlewareRoute.Use(middlewares.UserMiddleware())
+	OrderItemsMiddlewareRoute.POST("", orderItems.CreateOrderItem)
+	OrderItemsMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById) 
 
-	// // Private Update Order routes with user middleware
-	// updateOrderMiddlewareRoute := r.Group("/update-order")
-	// updateOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
-	// updateOrderMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById)
+	// Public route for list order-item sementara mungkin
+	r.GET("/order-items", orderItems.GetAllOrderItems)      
+	r.GET("/order-items/:id", orderItems.GetOrderItemsById) 
 
 	// Private Change password routes with user middleware
 	changePasswordMiddlewareRoute := r.Group("/change-password")
