@@ -9,7 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAllOrderAdmin(c *gin.Context) {
+func GetAllOrders(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var orders []models.Order
 	if err := db.Preload("OrderItems").Preload("PaymentMethod").Find(&orders).Error; err != nil {
