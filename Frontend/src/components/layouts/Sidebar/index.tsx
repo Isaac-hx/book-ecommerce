@@ -1,74 +1,13 @@
 "use client";
 
-import {
-  Book,
-  BookCheck,
-  CreditCard,
-  House,
-  ImagePlus,
-  Package,
-  Tags,
-  UserPen,
-} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
-const menus = [
-  {
-    label: "Akses cepat",
-    children: [
-      {
-        path: "/admin/home",
-        label: "Beranda",
-        icon: House,
-      },
-    ],
-  },
-  {
-    label: "Master",
-    children: [
-      {
-        path: "/admin/authors",
-        label: "Pengarang",
-        icon: UserPen,
-      },
-      {
-        path: "/admin/publishers",
-        label: "Penerbit",
-        icon: BookCheck,
-      },
-      {
-        path: "/admin/categories",
-        label: "Kategori",
-        icon: Tags,
-      },
-      {
-        path: "/admin/books",
-        label: "Buku",
-        icon: Book,
-      },
-      {
-        path: "/admin/stocks",
-        label: "Stok",
-        icon: Package,
-      },
-      {
-        path: "/admin/payment-methods",
-        label: "Rekening",
-        icon: CreditCard,
-      },
-      {
-        path: "/admin/imagetest",
-        label: "Image Test",
-        icon: ImagePlus,
-      },
-    ],
-  },
-];
+import type { IProps } from "./types";
 
-const Sidebar = () => {
+export const Sidebar = ({ menus }: IProps) => {
   const pathname = usePathname();
 
   return (
@@ -81,7 +20,6 @@ const Sidebar = () => {
             </h2>
             <div className="space-y-1">
               {menu.children.map((subMenu) => {
-                const Icon = subMenu.icon;
                 const isActive = pathname.startsWith(subMenu.path);
 
                 return (
@@ -94,7 +32,7 @@ const Sidebar = () => {
                       variant={isActive ? "secondary" : "ghost"}
                       className="w-full justify-start"
                     >
-                      <Icon className="mr-3" />
+                      {subMenu.icon}
                       {subMenu.label}
                     </Button>
                   </Link>
@@ -107,5 +45,3 @@ const Sidebar = () => {
     </aside>
   );
 };
-
-export default Sidebar;

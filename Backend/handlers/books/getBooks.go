@@ -78,29 +78,32 @@ func GetListBooks(c *gin.Context) {
 	}
 
 	var booksData []struct {
-		ID       uint   `json:"id"`
-		Title    string `json:"title"`
-		Author   string `json:"author_name"`
-		Price    int    `json:"price"`
-		CoverURL string `json:"cover_url"`
-		Quantity uint   `json:"quantity"`
+		ID       		uint   `json:"id"`
+		Title    		string `json:"title"`
+		Description		string `json:"description"`
+		Author   		string `json:"author_name"`
+		Price    		int    `json:"price"`
+		CoverURL 		string `json:"cover_url"`
+		Quantity 		uint   `json:"quantity"`
 	}
 
 	for _, book := range listBooks {
 		booksData = append(booksData, struct {
-			ID       uint   `json:"id"`
-			Title    string `json:"title"`
-			Author   string `json:"author_name"`
-			Price    int    `json:"price"`
-			CoverURL string `json:"cover_url"`
-			Quantity uint   `json:"quantity"`
+			ID       		uint   `json:"id"`
+			Title    		string `json:"title"`
+			Description		string `json:"description"`
+			Author   		string `json:"author_name"`
+			Price    		int    `json:"price"`
+			CoverURL 		string `json:"cover_url"`
+			Quantity 		uint   `json:"quantity"`
 		}{
-			ID:       book.ID,
-			Title:    book.Title,
-			Author:   book.Author.Name,
-			Price:    book.Price,
-			CoverURL: book.CoverUrl,
-			Quantity: book.Stocks.Quantity,
+			ID:       		book.ID,
+			Title:    		book.Title,
+			Description:	book.Description,
+			Author:   		book.Author.Name,
+			Price:    		book.Price,
+			CoverURL: 		book.CoverUrl,
+			Quantity: 		book.Stocks.Quantity,
 		})
 	}
 
