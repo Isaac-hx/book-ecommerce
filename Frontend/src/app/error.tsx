@@ -1,24 +1,29 @@
-"use client"; // Error components must be Client Components
+"use client";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type ErrorProps = {
-  error: Error;
   reset: () => void;
 };
 
-export default function Error({ error, reset }: ErrorProps) {
+export default function Error({ reset }: ErrorProps) {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h2>Something went wrong!</h2>
-      <p>{error.message}</p>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-        className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-      >
-        Try again
-      </button>
+    <div className="container flex min-h-screen flex-col items-center justify-center gap-4">
+      <h1 className="text-6xl font-bold">Oops!</h1>
+      <p>Maaf, kami tidak menemukan apa yang anda cari</p>
+      <div className="flex gap-4">
+        <Button asChild variant="outline">
+          <Link href="/">Kembali ke halaman utama</Link>
+        </Button>
+        <Button
+          onClick={
+            // Attempt to recover by trying to re-render the segment
+            () => reset()
+          }
+        >
+          Coba lagi
+        </Button>
+      </div>
     </div>
   );
 }

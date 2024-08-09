@@ -2,9 +2,9 @@
 
 import { ChevronRight, Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCookies } from "next-client-cookies";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -43,6 +43,32 @@ export const Navbar = () => {
 
   // TODO: Implement search input
 
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const params = new URLSearchParams(searchParams);
+
+  const [query, setQuery] = useState(params.get("title") || "");
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (query.trim() === "") return;
+    if (query !== "") {
+      params.delete("page");
+      console.log(params.toString());
+      params.set("title", query);
+      console.log(params.toString());
+      router.push(`/search?${params.toString()}`);
+    } else {
+      params.delete("title");
+    }
+    setQuery("");
+  };
+
   return (
     <header className="sticky top-0 z-10 flex flex-col gap-y-4 bg-background p-2 shadow">
       {/* Desktop */}
@@ -53,7 +79,12 @@ export const Navbar = () => {
         <Link href="/category" className="text-primary">
           Kategori
         </Link>
-        <SearchInput placeholder="Cari Buku..." />
+        <SearchInput
+          placeholder="Cari Buku..."
+          onChange={handleSearch}
+          onSubmit={handleSubmit}
+          value={query}
+        />
         <div className="flex items-center gap-x-8">
           <ToggleTheme />
           {token ? (
@@ -137,7 +168,12 @@ export const Navbar = () => {
         </Link>
       </div>
       <div className="px-2 md:hidden">
-        <SearchInput placeholder="Cari Buku..." />
+        <SearchInput
+          placeholder="Cari Buku..."
+          onChange={handleSearch}
+          onSubmit={handleSubmit}
+          value={query}
+        />
       </div>
     </header>
   );

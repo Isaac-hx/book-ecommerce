@@ -49,7 +49,7 @@ export default function BooksPage() {
   if (isLoading) return <BookSkeleton />;
 
   return (
-    <div className="container flex min-h-screen flex-col gap-12 p-12">
+    <div className="container flex flex-col gap-12 p-12">
       <div className="flex flex-col items-center justify-between md:flex-row">
         <p>
           Menampilkan {data?.data.length} dari total {data?.total_data} buku
@@ -73,7 +73,7 @@ export default function BooksPage() {
           </Select>
         </div>
       </div>
-      <div className="mx-auto grid w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="mx-auto grid min-h-screen w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {data?.data.map((book) => <BookCard key={book.id} {...book} />)}
       </div>
       <div className="flex flex-col items-center justify-between md:flex-row">
