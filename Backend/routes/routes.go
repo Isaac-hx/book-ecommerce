@@ -102,23 +102,27 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.GET("/stock", stocks.GetListStock)
 	r.GET("/stock/:id", stocks.GetStockById)
 
-	
-	r.POST("/create-orders",orderItems.CreateOrderItem) //dev state <- must be deleted
-	r.GET("/list-orders",orders.GetAllOrder)
+	r.POST("/create-orders", orderItems.CreateOrderItem) //dev state <- must be deleted
+	r.GET("/list-orders", orders.GetAllOrder)
 
-	paymentMethodMiddlewareRoute:=r.Group("/payment-method")
+	paymentMethodMiddlewareRoute := r.Group("/payment-method")
 	paymentMethodMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	paymentMethodMiddlewareRoute.POST("",paymentMethods.CreatePaymentMethod)
 	paymentMethodMiddlewareRoute.PUT("/:id",paymentMethods.UpdatePaymentById)
-	//public route for list payment method
-	r.GET("/payment-method",paymentMethods.GetAllPayment)
-	r.GET("/payment-method/:id",paymentMethods.GetPaymentById)
 
+	//public route for list payment method
+	r.GET("/payment-method", paymentMethods.GetAllPayment)
+	r.GET("/payment-method/:id", paymentMethods.GetPaymentById)
 
 	// Private Create Order routes with user middleware
 	createOrderMiddlewareRoute := r.Group("/create-order")
 	createOrderMiddlewareRoute.Use(middlewares.UserMiddleware())
 	createOrderMiddlewareRoute.POST("", orderItems.CreateOrderItem)
+
+	// Private Change password routes with user middleware
+	changePasswordMiddlewareRoute := r.Group("/change-password")
+	changePasswordMiddlewareRoute.Use(middlewares.UserMiddleware())
+	changePasswordMiddlewareRoute.POST("", auths.ChangePasswordHandler)
 
 	// Admin dashboard route with admin middleware
 	r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
