@@ -8,5 +8,5 @@ export const getProfileById = (id: number) => {
 
 export const updateProfileById = (params: UpdateProfilePayload) => {
   const { id, ...payload } = params;
-  return axiosInstance.put<{ message: string }>(`/profile/${id}`, payload);
+  return axiosInstance.put<{ message: string }>(`/profile`, payload);
 };

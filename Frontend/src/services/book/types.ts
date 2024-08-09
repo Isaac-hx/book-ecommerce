@@ -5,6 +5,7 @@ export type Book = {
   price: number;
   cover_url: string;
   quantity: number;
+  description: string;
 };
 
 export type GetAllBookParams = Partial<{
@@ -17,9 +18,10 @@ export type GetAllBookParams = Partial<{
 
 export type GetBooksResponse = {
   data: Book[];
-  number_of_pages: number;
-  page_index: number;
+  current_page: number;
+  page_size: number;
   total_data: number;
+  total_pages: number;
 };
 
 export type GetBookByIdResponse = {
