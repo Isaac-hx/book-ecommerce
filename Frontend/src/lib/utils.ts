@@ -1,6 +1,9 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import { type BadgeProps } from "@/components/ui/badge";
+import { type OrderStatus } from "@/services/order/types";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -40,4 +43,17 @@ export const formatCentimeter = (value: number) => {
     unitDisplay: "short",
     maximumFractionDigits: 1,
   }).format(value);
+};
+
+export const getOrderStatusBadgeVariant = (
+  status_order: OrderStatus,
+): BadgeProps["variant"] => {
+  switch (status_order) {
+    case "paid":
+      return "default";
+    case "rejected":
+      return "destructive";
+    default:
+      return "outline";
+  }
 };
