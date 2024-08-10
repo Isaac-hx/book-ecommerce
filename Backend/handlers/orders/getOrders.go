@@ -2,6 +2,7 @@ package orders
 
 import (
 	"Backend/models"
+	"fmt"
 
 	"net/http"
 
@@ -116,4 +117,30 @@ func GetOrderByIdAdmin(c *gin.Context){
 	// dataOrderById.BookOrder  =listBookID
 	// dataOrderById.TotalPrice = dataOrder.
 	c.JSON(http.StatusOK,gin.H{"data":dataOrderById})
+}
+
+//fixing bug
+func GetAllOrdersByProfile(c *gin.Context){
+	db:=c.MustGet("db").(*gorm.DB)
+	userID := c.MustGet("userID").(uint)
+	fmt.Println(userID)
+	var profile models.Profile
+	db.Where("user_id",userID).First(&profile)
+
+	var orders []models.Order
+	err := db.Joins("JOIN order_items ON order_items.order_id = orders.id").
+    Where("order_items.profile_id = ?", profile.ID).
+    Preload("OrderItems").
+    Preload("PaymentMethod").
+    Find(&orders).Error
+
+if err != nil {
+    c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    return
+}
+
+	c.JSON(http.StatusOK,gin.H{"data":orders})
+
+
+
 }

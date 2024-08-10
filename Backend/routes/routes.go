@@ -116,6 +116,13 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	//public route for list payment method
 	r.GET("/payment-method", paymentMethods.GetAllPayment)
 	r.GET("/payment-method/:id", paymentMethods.GetPaymentById)
+	r.GET("/list-orders", orders.GetAllOrdersByProfile)
+
+	ordersMiddlewareRouteprofile := r.Group("/list-order-by-profile")
+	ordersMiddlewareRouteprofile.Use(middlewares.UserMiddleware())
+	ordersMiddlewareRouteprofile.GET("", orders.GetAllOrdersByProfile)
+
+
 
 	// Private Create Order routes with user middleware
 	createOrderMiddlewareRoute := r.Group("/create-order")
