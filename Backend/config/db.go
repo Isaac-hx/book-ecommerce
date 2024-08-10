@@ -28,8 +28,9 @@ func ConnectDB() {
 
 	//mengambil nilai env
 	dbProvider := utils.Getenv("DB_PROVIDER", "mysql")
+	environment:=utils.Getenv("ENVIRONMENT","local")
 
-	if dbProvider == "mysql" {
+	if environment == "local"{
 		fmt.Println(dbProvider)
 		//username:= utils.Getenv("USERNAME","root")
 		//password:= ""
