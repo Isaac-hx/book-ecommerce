@@ -124,7 +124,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	ordersMiddlewareRouteprofile.Use(middlewares.UserMiddleware())
 	ordersMiddlewareRouteprofile.GET("", orders.GetAllOrdersByProfile)
 
-
+	r.GET("/get-order-item", orderItems.GetAllOrderItems) 
 
 	// Private Create Order routes with user middleware
 	OrderItemsMiddlewareRoute := r.Group("/order-items")
@@ -137,6 +137,13 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	ordersMiddlewareRoute.GET("",orders.GetAllOrdersAdmin)
 	ordersMiddlewareRoute.GET("/:id",orders.GetOrdersByIdAdmin)
 	ordersMiddlewareRoute.PUT("/:id",orders.UpdateOrderByIDAdmin)
+
+	ordersUserMiddlewareRoute:=r.Group("/order")
+	ordersUserMiddlewareRoute.Use(middlewares.UserMiddleware())
+	ordersUserMiddlewareRoute.POST("",orders.CreateOrderByUser)
+	ordersUserMiddlewareRoute.GET("",orders.GetAllOrdersByUser)
+	ordersUserMiddlewareRoute.GET("/:id",orders.GetOrdersUserById)
+	ordersUserMiddlewareRoute.PUT("/:id",orders.UpdateOrderProofPaymentByUser)
 
 	// Private Change password routes with user middleware
 	changePasswordMiddlewareRoute := r.Group("/change-password")
