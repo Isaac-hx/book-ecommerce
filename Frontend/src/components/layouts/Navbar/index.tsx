@@ -27,6 +27,10 @@ export const Navbar = () => {
       label: "Pesanan Saya",
       href: "/orders",
     },
+    {
+      label: "Ubah Kata Sandi",
+      href: "/profile/change-password",
+    },
   ];
 
   const { token, clearAuth } = useAuthStore((state) => state);
@@ -41,13 +45,8 @@ export const Navbar = () => {
     toast.success("Berhasil keluar");
   };
 
-  // TODO: Implement search input
-
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-
   const params = new URLSearchParams(searchParams);
-
   const [query, setQuery] = useState(params.get("title") || "");
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {

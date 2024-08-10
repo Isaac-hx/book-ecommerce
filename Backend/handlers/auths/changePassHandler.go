@@ -42,7 +42,7 @@ func ChangePasswordHandler(c *gin.Context) {
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(requestData.Password)); err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid current password!"})
+		c.JSON(http.StatusForbidden, gin.H{"error": "Invalid current password!"})
 		return
 	}
 

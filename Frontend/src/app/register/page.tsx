@@ -10,14 +10,14 @@ const Page = () => {
 
   return (
     <>
-      <header className="shadow">
+      {/* <header className="shadow">
         <nav className="container sticky max-w-screen-xl p-5">
           <Link href="/" className="text-2xl">
             Boomerce
           </Link>
         </nav>
-      </header>
-      <main className="container mt-10 max-w-screen-xl space-y-10 p-5">
+      </header> */}
+      <main className="container mx-auto flex min-h-screen max-w-screen-xl flex-col items-center justify-center p-5">
         <h1 className="text-3xl">Daftar</h1>
         {isSuccess && (
           <>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useGetBookById } from "@/hooks/useGetBookById";
 import {
   formatCentimeter,
@@ -12,7 +13,6 @@ import {
   formatKilogram,
   formatRupiah,
 } from "@/lib/utils";
-import LoadingSpinner from "@/components/ui/loading-spinner";
 
 type DetailBookPageProps = {
   params: {

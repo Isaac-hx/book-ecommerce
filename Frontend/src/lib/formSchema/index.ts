@@ -16,3 +16,16 @@ export const profileFormSchema = z.object({
   phone: z.string(),
   address: z.string().min(1, { message: "Alamat wajb diisi" }),
 });
+
+export const changePasswordFormSchema = z
+  .object({
+    password: z.string().min(1, { message: "Password lama wajb diisi" }),
+    new_password: z.string().min(1, { message: "Password baru wajb diisi" }),
+    confirm_new_password: z
+      .string()
+      .min(1, { message: "Password baru wajb diisi" }),
+  })
+  .refine((data) => data.new_password === data.confirm_new_password, {
+    message: "Password baru tidak sama",
+    path: ["confirm_new_password"],
+  });
