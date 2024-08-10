@@ -30,7 +30,7 @@ func UpdateOrderItemById(c *gin.Context) {
 
 	// Update the fields if provided
 	if input.TotalPrice != 0 {
-		orderItem.TotalPrice = input.TotalPrice
+		orderItem.SubTotal = input.TotalPrice
 	}
 	if input.QuantityTotal != 0 {
 		orderItem.QuantityTotal = input.QuantityTotal

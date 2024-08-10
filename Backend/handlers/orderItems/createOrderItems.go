@@ -43,7 +43,7 @@ func CreateOrderItem(c *gin.Context) {
 	var orderItems []models.OrderItem
 	for _, item := range request.OrderItems {
 		orderItem := models.OrderItem{
-			TotalPrice:    item.TotalPrice,
+			SubTotal:    item.TotalPrice,
 			QuantityTotal: item.QuantityTotal,
 			OrderID:       order.ID, // Link to the newly created order
 			BookID:        item.BookID,

@@ -13,6 +13,8 @@ type User struct {
 	EmailAddress string `gorm:"unique;not null;type:varchar(100)" json:"email"`
 	Password     string `gorm:"not null;type:varchar(255)" json:"password"`
 	Role         string `gorm:"type:varchar(100)" json:"role"`
+	Order		[]Order			`json:"orders"`
+
 }
 
 func (u *User) SaveUser(db *gorm.DB) (*User, error) {
