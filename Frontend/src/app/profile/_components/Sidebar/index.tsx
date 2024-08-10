@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag, User } from "lucide-react";
+import { KeyRound, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
@@ -18,6 +18,11 @@ export const SidebarProfile = () => {
       label: "Pesanan Saya",
       path: "/profile/orders",
       icon: ShoppingBag,
+    },
+    {
+      label: "Ubah Kata Sandi",
+      path: "/profile/change-password",
+      icon: KeyRound,
     },
   ];
 

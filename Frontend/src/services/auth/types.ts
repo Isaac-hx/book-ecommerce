@@ -27,3 +27,16 @@ export type AuthLoginErrorResponse = {
 };
 
 export type RoleAvailable = "admin" | "user";
+
+export type ChangePasswordPayload = {
+  password: string;
+  new_password: string;
+};
+
+export type ChangePasswordResponse = {
+  message: string;
+};
+
+export type ChangePasswordErrorResponse = {
+  error: string;
+};

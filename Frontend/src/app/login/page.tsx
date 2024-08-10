@@ -67,7 +67,6 @@ export default function LoginPage() {
       }
     },
     onError: (error: AxiosError<AuthLoginErrorResponse>) => {
-      console.log(error);
       toast.error(error.response?.data.error);
     },
   });
@@ -78,12 +77,10 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
-      <Card className="mx-auto max-w-sm">
+      <Card className="mx-auto w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email and password below to login to your account
-          </CardDescription>
+          <CardTitle className="text-2xl">Masuk</CardTitle>
+          <CardDescription>Silahkan login untuk melanjutkan</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -106,10 +103,10 @@ export default function LoginPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Kata Sandi</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your password"
+                        placeholder="Masukkan kata sandi anda"
                         type="password"
                         {...field}
                       />
@@ -124,14 +121,14 @@ export default function LoginPage() {
                 </FormMessage>
               )}
               <Button type="submit" className="w-full" disabled={isPending}>
-                Login
+                Masuk
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="underline">
-              Sign up
+            Belum punya akun?{" "}
+            <Link href="/register" className="text-primary underline">
+              Daftar
             </Link>
           </div>
         </CardContent>
