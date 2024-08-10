@@ -2,7 +2,7 @@ import { fileTypeFromBlob } from "file-type";
 
 import { uploadImage } from "@/lib/firebase/storage";
 
-const MAXIMUM_FILE_SIZE = 512_000; // 500KB
+const MAXIMUM_FILE_SIZE = 1_048_576; // 1MB
 
 export const POST = async (request: Request) => {
   try {

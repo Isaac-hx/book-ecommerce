@@ -16,3 +16,6 @@ export const requiredInt = z.coerce
 export const email = requiredStr.email({ message: "Email tidak valid" }).trim();
 export const optionalFile = z.instanceof(File).nullable();
 export const requiredfile = z.instanceof(File, { message: "Wajib diisi" });
+export const orderStatus = z.enum(["pending", "paid", "rejected"], {
+  message: 'Status harus "pending", "dibayar", atau "ditolak"',
+});

@@ -71,12 +71,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-end">
-        <Button variant="outline" size="sm" onClick={onAddButtonClick}>
-          <CirclePlus className="mr-2 h-4 w-4" />
-          Tambah Data
-        </Button>
-      </div>
+      {onAddButtonClick && (
+        <div className="flex items-center justify-end">
+          <Button variant="outline" size="sm" onClick={onAddButtonClick}>
+            <CirclePlus className="mr-2 h-4 w-4" />
+            Tambah Data
+          </Button>
+        </div>
+      )}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
