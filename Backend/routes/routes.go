@@ -134,7 +134,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	ordersMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	ordersMiddlewareRoute.GET("",orders.GetAllOrdersAdmin)
 	ordersMiddlewareRoute.GET("/:id",orders.GetOrdersByIdAdmin)
-	ordersMiddlewareRoute.PUT("/:id",orders.UpdateOrdersById)
+	ordersMiddlewareRoute.PUT("/:id",orders.UpdateOrderByIDAdmin)
 
 	// Private Change password routes with user middleware
 	changePasswordMiddlewareRoute := r.Group("/change-password")
