@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"Backend/utils"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -30,6 +31,8 @@ func RoleMiddleware(requiredRole string) gin.HandlerFunc {
 
 // UserMiddleware checks if the user has the appropriate user_id token to access the route.
 func UserMiddleware() gin.HandlerFunc {
+	fmt.Println("ini berjalan")
+
 	return func(c *gin.Context) {
 		err := utils.TokenValid(c)
 		if err != nil {

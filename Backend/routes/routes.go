@@ -107,7 +107,6 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// r.GET("/get-order-item/:id", orderItems.GetOrderItemsById) //dev state <- must be deleted
 	// r.PUT("/order-item/:order-item-id", orderItems.UpdateOrderItemById) //dev state <- must be deleted
 
-	r.GET("/list-orders", orders.GetAllOrder)
 
 	paymentMethodMiddlewareRoute := r.Group("/payment-method")
 	paymentMethodMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
@@ -117,6 +116,13 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public route for list payment method
 	r.GET("/payment-method", paymentMethods.GetAllPayment)
 	r.GET("/payment-method/:id", paymentMethods.GetPaymentById)
+	r.GET("/list-orders", orders.GetAllOrdersByProfile)
+
+	ordersMiddlewareRouteprofile := r.Group("/list-order-by-profile")
+	ordersMiddlewareRouteprofile.Use(middlewares.UserMiddleware())
+	ordersMiddlewareRouteprofile.GET("", orders.GetAllOrdersByProfile)
+
+
 
 	// Private Create Order routes with user middleware
 	OrderItemsMiddlewareRoute := r.Group("/order-items")
@@ -124,9 +130,11 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	OrderItemsMiddlewareRoute.POST("", orderItems.CreateOrderItem)
 	OrderItemsMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById) 
 
-	// Public route for list order-item sementara mungkin
-	r.GET("/order-items", orderItems.GetAllOrderItems)      
-	r.GET("/order-items/:id", orderItems.GetOrderItemsById) 
+	ordersMiddlewareRoute:=r.Group("/orders")
+	ordersMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	ordersMiddlewareRoute.GET("",orders.GetAllOrders)
+	ordersMiddlewareRoute.GET("/:id",orders.GetOrderByIdAdmin)
+	ordersMiddlewareRoute.PUT("/:id",orders.UpdateOrdersById)
 
 	// Private Change password routes with user middleware
 	changePasswordMiddlewareRoute := r.Group("/change-password")
