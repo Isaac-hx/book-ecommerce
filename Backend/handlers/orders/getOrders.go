@@ -64,11 +64,17 @@ func GetOrdersByIdAdmin(c *gin.Context){
 		c.AbortWithStatusJSON(http.StatusNotFound,gin.H{"message":err.Error()})
 		return
 	}
+	var searchProfileById models.Profile
+	querySearhcProfile:= db.Where("user_id = ?",order.UserID).First(&searchProfileById).Error
+	if querySearhcProfile != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound,gin.H{"message":querySearhcProfile.Error()})
+		return
+	}
+
 	type searchBook struct{
 		ID uint  `json:"book_id"`
 		SubTotal uint `json:"subtotal"`
 		Quantity uint	`json:"quantity"`
-		PriceTotalBook uint `json:"price_total_book"`
 		CoverUrl string 	`json:"cover_url"`
 		Title string	`json:"title"`
 		PricePerBook int  `json:"price_per_book"`
@@ -87,7 +93,6 @@ func GetOrdersByIdAdmin(c *gin.Context){
 			ID: bookOrder.ID,
 			SubTotal: item.SubTotal,
 			Quantity: item.QuantityTotal,
-			PriceTotalBook: item.SubTotal,
 			CoverUrl: bookOrder.CoverUrl,
 			Title: bookOrder.Title,
 			PricePerBook:bookOrder.Price,
@@ -102,8 +107,14 @@ func GetOrdersByIdAdmin(c *gin.Context){
 		ProofPayment	string	`json:"proof_payment"`
 		PaymentMethodID uint `json:"payment_method_id"`
 		PaymentMethodName  string	`json:"payment_method_name"`
+		PaymentHolderName	string	`json:"payment_holder_name"`
+		PaymentHolderNumber	string	`json:"payment_holder_number"`
 		TotalPrice		int	`json:"total_price"`
-		UserEmail	string	`json:"user_email"`
+		FirstName	string	`json:"first_name"`
+		LastName	string	`json:"last_name"`
+		Address		string `json:"address"`
+		EmailAddress string `json:"email_address"`
+
 		ListBookOrder []searchBook `json:"list_order_book"`
 
 	}
@@ -115,7 +126,13 @@ func GetOrdersByIdAdmin(c *gin.Context){
 		PaymentMethodID: order.PaymentMethod.ID,
 		PaymentMethodName: order.PaymentMethod.Name,
 		TotalPrice: order.TotalPrice,
-		UserEmail: order.User.EmailAddress,
+		EmailAddress: order.User.EmailAddress,
+		FirstName: searchProfileById.FirstName,
+		LastName: searchProfileById.LastName,
+		Address: searchProfileById.Address,
+		PaymentHolderName: order.PaymentMethod.AccountHoldername,
+		PaymentHolderNumber: order.PaymentMethod.AccountNumber,
+
 		ListBookOrder: bookListOrder,
 	}
 	
