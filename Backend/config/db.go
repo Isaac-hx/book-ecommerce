@@ -21,7 +21,7 @@ var DB *gorm.DB
 
 // function mengkoneksikan ke database
 func ConnectDB() {
-	err:=godotenv.Load()
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
@@ -77,5 +77,6 @@ func ConnectDB() {
 		&models.Order{},
 		&models.OrderItem{},
 		&models.PaymentMethod{},
+		&models.Cart{},
 	)
 }
