@@ -10,10 +10,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetAllOrders(c *gin.Context) {
+// admin handler
+func GetAllOrdersAdmin(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var orders []models.Order
-	if err := db.Preload("OrderItems").Preload("PaymentMethod").Find(&orders).Error; err != nil {
+	if err := db.Preload("OrderItems").Preload("PaymentMethod").Preload("User").Find(&orders).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Server Error"})
 		return
 	}
@@ -23,6 +24,8 @@ func GetAllOrders(c *gin.Context) {
 		ProofPayment string `json:"proof_payment"`
 		PaymentMethodId int `json:"payment_method_id"`
 		PaymentMethodName string `json:"payment_method_name"`
+		UserEmail	string 	`json:"user_email"`
+		OrderAt		string	`json:"order_at"`
 
 
 	}
@@ -34,16 +37,20 @@ func GetAllOrders(c *gin.Context) {
 			ProofPayment string `json:"proof_payment"`
 			PaymentMethodId int `json:"payment_method_id"`
 			PaymentMethodName string `json:"payment_method_name"`
-		}{
+			UserEmail	string	`json:"user_email"`
+			OrderAt		string	`json:"order_at"`
+			}{
 			ID: item.ID,
 			StatusOrder: item.StatusOrder,
 			ProofPayment: item.ProofPayment,
 			PaymentMethodId: item.PaymentMethodID,
 			PaymentMethodName:item.PaymentMethod.Name,
+			UserEmail: item.User.EmailAddress,
+			OrderAt: item.CreatedAt.String(),
 		})
 		
 	}
-	c.JSON(http.StatusOK, gin.H{"orders": dataOrder})
+	c.JSON(http.StatusOK, gin.H{"data": dataOrder})
 }
 
 func GetOrderByIdAdmin(c *gin.Context){
@@ -116,7 +123,74 @@ func GetOrderByIdAdmin(c *gin.Context){
 	dataOrderById.BookWithStocks = listBookWithStock
 	// dataOrderById.BookOrder  =listBookID
 	// dataOrderById.TotalPrice = dataOrder.
-	c.JSON(http.StatusOK,gin.H{"data":dataOrderById})
+	c.JSON(http.StatusOK,gin.H{"data":dataOrder})
+}
+
+func GetOrdersByIdAdmin(c *gin.Context){
+	db:=c.MustGet("db").(*gorm.DB)
+	id:=c.Param("id")
+	var order models.Order
+	err := db.Preload("OrderItems").Preload("PaymentMethod").Preload("User").First(&order,id).Error
+	if err != nil{
+		c.AbortWithStatusJSON(http.StatusNotFound,gin.H{"message":err.Error()})
+		return
+	}
+	type searchBook struct{
+		ID uint  `json:"book_id"`
+		SubTotal uint `json:"subtotal"`
+		Quantity uint	`json:"quantity"`
+		PriceTotalBook uint `json:"price_total_book"`
+		CoverUrl string 	`json:"cover_url"`
+		Title string	`json:"title"`
+		PricePerBook int  `json:"price_per_book"`
+		
+	}
+	var bookListOrder []searchBook
+	for _,item :=range order.OrderItems{
+		var bookOrder models.Book
+		err:=db.First(&bookOrder,item.BookID).Error
+		if err != nil{
+			c.AbortWithStatusJSON(http.StatusNotFound,gin.H{"message":err.Error()})
+			return
+		}
+
+		data:=searchBook{
+			ID: bookOrder.ID,
+			SubTotal: item.SubTotal,
+			Quantity: item.QuantityTotal,
+			PriceTotalBook: item.SubTotal,
+			CoverUrl: bookOrder.CoverUrl,
+			Title: bookOrder.Title,
+			PricePerBook:bookOrder.Price,
+		}
+
+		bookListOrder=append(bookListOrder, data)
+	}
+
+	type dataOrderByID struct{
+		ID	uint	`json:"order_id"`
+		StatusOrder string `json:"status_order"`
+		ProofPayment	string	`json:"proof_payment"`
+		PaymentMethodID uint `json:"payment_method_id"`
+		PaymentMethodName  string	`json:"payment_method_name"`
+		TotalPrice		int	`json:"total_price"`
+		UserEmail	string	`json:"user_email"`
+		ListBookOrder []searchBook `json:"list_order_book"`
+
+	}
+
+	data:=dataOrderByID{
+		ID: order.ID,
+		StatusOrder: order.StatusOrder,
+		ProofPayment: order.ProofPayment,
+		PaymentMethodID: order.PaymentMethod.ID,
+		PaymentMethodName: order.PaymentMethod.Name,
+		TotalPrice: order.TotalPrice,
+		UserEmail: order.User.EmailAddress,
+		ListBookOrder: bookListOrder,
+	}
+	
+	c.JSON(http.StatusOK,gin.H{"data":data})
 }
 
 //fixing bug
