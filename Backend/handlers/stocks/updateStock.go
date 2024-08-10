@@ -36,10 +36,6 @@ func UpdateStockbyId(c *gin.Context) {
 
 	}
 
-	if updateStock.RowsAffected == 0 {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": "Data tidak terupdate"})
-		return
-	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Data berhasil di update"})
 
