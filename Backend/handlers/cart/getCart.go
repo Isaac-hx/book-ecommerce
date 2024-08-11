@@ -40,6 +40,8 @@ func GetListCarts(c *gin.Context) {
 
 	queryError := db.Preload("User").
 		Preload("Book").
+		Preload("Book.Publisher").
+		Preload("Book.Author").
 		Where("user_id = ?", userID).
 		Order("user_id ASC, book_id ASC").
 		Limit(limit).
