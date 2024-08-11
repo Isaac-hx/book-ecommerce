@@ -23,7 +23,7 @@ func GetHistoryOrder(c *gin.Context) {
 	//membuat type data struct result
 	type result struct {
 		Date  time.Time `json:"date"`
-		Total int	`json:"total_prie_order"`
+		Total int	`json:"total_price_order"`
 	  }
 	//inisialaassi data order
 	var data []result	
