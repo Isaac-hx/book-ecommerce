@@ -10,6 +10,7 @@ import (
 	"Backend/handlers/authors"
 	"Backend/handlers/auths"
 	"Backend/handlers/books"
+	"Backend/handlers/cart"
 	"Backend/handlers/categories"
 	"Backend/handlers/orderItems"
 	"Backend/handlers/orders"
@@ -106,9 +107,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// r.GET("/get-order-item", orderItems.GetAllOrderItems)      //dev state <- must be deleted
 	// r.GET("/get-order-item/:id", orderItems.GetOrderItemsById) //dev state <- must be deleted
 	// r.PUT("/order-item/:order-item-id", orderItems.UpdateOrderItemById) //dev state <- must be deleted
-	getHistoryOrderMiddlewareRoute:=r.Group("/history-order")
+	getHistoryOrderMiddlewareRoute := r.Group("/history-order")
 	getHistoryOrderMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
-	getHistoryOrderMiddlewareRoute.GET("",orders.GetHistoryOrder)
+	getHistoryOrderMiddlewareRoute.GET("", orders.GetHistoryOrder)
 
 	paymentMethodMiddlewareRoute := r.Group("/payment-method")
 	paymentMethodMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
@@ -124,26 +125,26 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	ordersMiddlewareRouteprofile.Use(middlewares.UserMiddleware())
 	ordersMiddlewareRouteprofile.GET("", orders.GetAllOrdersByProfile)
 
-	r.GET("/get-order-item", orderItems.GetAllOrderItems) 
+	r.GET("/get-order-item", orderItems.GetAllOrderItems)
 
 	// Private Create Order routes with user middleware
 	OrderItemsMiddlewareRoute := r.Group("/order-items")
 	OrderItemsMiddlewareRoute.Use(middlewares.UserMiddleware())
 	OrderItemsMiddlewareRoute.POST("", orderItems.CreateOrderItem)
-	OrderItemsMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById) 
+	OrderItemsMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById)
 
-	ordersMiddlewareRoute:=r.Group("/admin/order")
+	ordersMiddlewareRoute := r.Group("/admin/order")
 	ordersMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
-	ordersMiddlewareRoute.GET("",orders.GetAllOrdersAdmin)
-	ordersMiddlewareRoute.GET("/:id",orders.GetOrdersByIdAdmin)
-	ordersMiddlewareRoute.PUT("/:id",orders.UpdateOrderByIDAdmin)
+	ordersMiddlewareRoute.GET("", orders.GetAllOrdersAdmin)
+	ordersMiddlewareRoute.GET("/:id", orders.GetOrdersByIdAdmin)
+	ordersMiddlewareRoute.PUT("/:id", orders.UpdateOrderByIDAdmin)
 
-	ordersUserMiddlewareRoute:=r.Group("/order")
+	ordersUserMiddlewareRoute := r.Group("/order")
 	ordersUserMiddlewareRoute.Use(middlewares.UserMiddleware())
-	ordersUserMiddlewareRoute.POST("",orders.CreateOrderByUser)
-	ordersUserMiddlewareRoute.GET("",orders.GetAllOrdersByUser)
-	ordersUserMiddlewareRoute.GET("/:id",orders.GetOrdersUserById)
-	ordersUserMiddlewareRoute.PUT("/:id",orders.UpdateOrderProofPaymentByUser)
+	ordersUserMiddlewareRoute.POST("", orders.CreateOrderByUser)
+	ordersUserMiddlewareRoute.GET("", orders.GetAllOrdersByUser)
+	ordersUserMiddlewareRoute.GET("/:id", orders.GetOrdersUserById)
+	ordersUserMiddlewareRoute.PUT("/:id", orders.UpdateOrderProofPaymentByUser)
 
 	// Private Change password routes with user middleware
 	changePasswordMiddlewareRoute := r.Group("/change-password")
@@ -154,6 +155,11 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
 	})
+
+	r.POST("/cart", cart.CreateCart)   // dev state <- must use user middlerware
+	r.DELETE("/cart", cart.DeleteCart) // dev state <- must use user middlerware
+	r.PUT("/cart", cart.UpdateCart)    // dev state <- must use user middlerware
+	r.GET("/cart", cart.GetListCarts)  // dev state <- must use user middlerware
 
 	return r
 }
