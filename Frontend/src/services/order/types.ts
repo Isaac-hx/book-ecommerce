@@ -6,6 +6,7 @@ export type Order = {
   proof_payment: string;
   payment_method_id: number;
   payment_method_name: string;
+  total_price: number;
 };
 
 export type OrderDetailItem = {
@@ -43,4 +44,12 @@ export type GetOrderByIdResponse = {
 export type UpdateOrderPayload = {
   id: string;
   status_order: OrderStatus;
+};
+
+export type CreateOrderPayload = {
+  payment_method_id: number;
+  orders: {
+    book_id: number;
+    quantity: number;
+  }[];
 };
