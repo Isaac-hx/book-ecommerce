@@ -5,10 +5,8 @@ import (
 	"Backend/models"
 	"Backend/utils"
 	"fmt"
-	"log"
 	"os"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 
 	"gorm.io/gorm"
@@ -19,10 +17,7 @@ var DB *gorm.DB
 
 // function mengkoneksikan ke database
 func ConnectDB() *gorm.DB{
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+
 
 	//mengambil nilai env
 	dbProvider := utils.Getenv("DB_PROVIDER", "mysql")
