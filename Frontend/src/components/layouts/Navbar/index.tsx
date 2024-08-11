@@ -146,10 +146,15 @@ export const Navbar = () => {
               {token ? (
                 <ActionDialog
                   actionHandler={handleLogout}
+                  trigger={
+                    <Button className="w-full" variant="destructive">
+                      Keluar
+                    </Button>
+                  }
                   actionName={"Keluar"}
                   title={"Anda Yakin Ingin Keluar?"}
                   description={"Jika anda keluar, anda harus login kembali!"}
-                  className="w-full rounded bg-destructive py-2 text-destructive-foreground hover:bg-destructive/90 hover:text-destructive-foreground disabled:bg-primary/40"
+                  className="w-full"
                 />
               ) : (
                 <Button asChild className="w-full">
