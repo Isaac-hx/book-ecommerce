@@ -1,8 +1,6 @@
 package routes
 
 import (
-	"net/http"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -12,7 +10,6 @@ import (
 	"Backend/handlers/books"
 	"Backend/handlers/cart"
 	"Backend/handlers/categories"
-	"Backend/handlers/orderItems"
 	"Backend/handlers/orders"
 	"Backend/handlers/paymentMethods"
 	"Backend/handlers/profiles"
@@ -22,8 +19,7 @@ import (
 	"Backend/middlewares"
 )
 
-func SetupRouter(db *gorm.DB) *gin.Engine {
-	r := gin.Default()
+func SetupRouter(db *gorm.DB,r *gin.Engine)  {
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
@@ -103,10 +99,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	r.GET("/stock", stocks.GetListStock)
 	r.GET("/stock/:id", stocks.GetStockById)
 
-	// r.POST("/create-orders", orderItems.CreateOrderItem)       //dev state <- must be deleted
-	// r.GET("/get-order-item", orderItems.GetAllOrderItems)      //dev state <- must be deleted
-	// r.GET("/get-order-item/:id", orderItems.GetOrderItemsById) //dev state <- must be deleted
-	// r.PUT("/order-item/:order-item-id", orderItems.UpdateOrderItemById) //dev state <- must be deleted
+	//summary for admin
 	summaryMiddlewareRoute := r.Group("/summary")
 	summaryMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	summaryMiddlewareRoute.GET("/history-order", orders.GetHistoryOrder)
@@ -114,8 +107,6 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	summaryMiddlewareRoute.GET("/book", books.GetTotalRowBooks)
 	summaryMiddlewareRoute.GET("/author", authors.GetTotalRowAuthor)
 	summaryMiddlewareRoute.GET("/order", orders.GetTotalRowOrders)
-
-
 
 
 
@@ -127,21 +118,18 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// Public route for list payment method
 	r.GET("/payment-method", paymentMethods.GetAllPayment)
 	r.GET("/payment-method/:id", paymentMethods.GetPaymentById)
-	r.GET("/list-orders", orders.GetAllOrdersByProfile)
 
-	ordersMiddlewareRouteprofile := r.Group("/list-order-by-profile")
-	ordersMiddlewareRouteprofile.Use(middlewares.UserMiddleware())
-	ordersMiddlewareRouteprofile.GET("", orders.GetAllOrdersByProfile)
 
-	// Private Create Order routes with user middleware
-	OrderItemsMiddlewareRoute := r.Group("/order-items")
-	OrderItemsMiddlewareRoute.Use(middlewares.UserMiddleware())
-	OrderItemsMiddlewareRoute.POST("", orderItems.CreateOrderItem)
-	OrderItemsMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById)
-	OrderItemsMiddlewareRoute.DELETE("/:id", orderItems.DeleteOrderItem)
+
+	// // Private Create Order routes with user middleware
+	// OrderItemsMiddlewareRoute := r.Group("/order-items")
+	// OrderItemsMiddlewareRoute.Use(middlewares.UserMiddleware())
+	// OrderItemsMiddlewareRoute.POST("", orderItems.CreateOrderItem)
+	// OrderItemsMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById)
+	// OrderItemsMiddlewareRoute.DELETE("/:id", orderItems.DeleteOrderItem)
 	
-	r.GET("/order-items", orderItems.GetAllOrderItems)
-	r.GET("/order-items/:id", orderItems.GetOrderItemsById)
+	// r.GET("/order-items", orderItems.GetAllOrderItems)
+	// r.GET("/order-items/:id", orderItems.GetOrderItemsById)
 
 	ordersMiddlewareRoute := r.Group("/admin/order")
 	ordersMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
@@ -161,22 +149,13 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	changePasswordMiddlewareRoute.Use(middlewares.UserMiddleware())
 	changePasswordMiddlewareRoute.POST("", auths.ChangePasswordHandler)
 
-	// Admin dashboard route with admin middleware
-	r.GET("/admin/dashboard", middlewares.RoleMiddleware("admin"), func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
-	})
 
-	r.POST("/cart-debug", cart.CreateCart)   // dev state <- must use user middlerware
-	r.DELETE("/cart-debug", cart.DeleteCart) // dev state <- must use user middlerware
-	r.PUT("/cart-debug", cart.UpdateCart)    // dev state <- must use user middlerware
-	r.GET("/cart-debug", cart.GetListCarts)  // dev state <- must use user middlerware
 
-	cartDebugMiddlewareRoute := r.Group("/cart") // debug
+	cartDebugMiddlewareRoute := r.Group("/cart") 
 	cartDebugMiddlewareRoute.Use(middlewares.UserMiddleware())
 	cartDebugMiddlewareRoute.POST("", cart.CreateCart) 
 	cartDebugMiddlewareRoute.PUT("", cart.UpdateCart) 
 	cartDebugMiddlewareRoute.DELETE("", cart.DeleteCart)
 	cartDebugMiddlewareRoute.GET("", cart.GetListCarts)
 
-	return r
 }
