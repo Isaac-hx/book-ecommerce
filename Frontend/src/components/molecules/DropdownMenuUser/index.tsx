@@ -1,6 +1,6 @@
 "use client";
 
-import { User } from "lucide-react";
+import { Trash, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCookies } from "next-client-cookies";
 import { toast } from "sonner";
@@ -59,6 +59,7 @@ export const DropdownMenuUser = () => {
         <DropdownMenuItem asChild>
           <ActionDialog
             actionHandler={handleLogout}
+            trigger={"Keluar"}
             actionName={"Keluar"}
             title={"Anda Yakin Ingin Keluar?"}
             description={"Jika anda keluar, anda harus login kembali!"}

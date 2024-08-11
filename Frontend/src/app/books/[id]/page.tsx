@@ -1,18 +1,13 @@
 "use client";
 
-import { Minus, Plus, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { AddToCart } from "@/components/organisms/add-to-cart";
 import LoadingSpinner from "@/components/ui/loading-spinner";
 import { useGetBookById } from "@/hooks/useGetBookById";
-import {
-  formatCentimeter,
-  formatDate,
-  formatKilogram,
-  formatRupiah,
-} from "@/lib/utils";
+import { formatCentimeter, formatDate, formatKilogram } from "@/lib/utils";
+import { ErrorMessage } from "@/components/molecules";
 
 type DetailBookPageProps = {
   params: {
@@ -24,25 +19,15 @@ export default function DetailBookPage({
   params: { id },
 }: DetailBookPageProps) {
   const [showDescription, setShowDescription] = useState(false);
-  const [quantity, setQuantity] = useState(1);
 
   const { data: book, isLoading, error } = useGetBookById(id);
-
-  const decrementQuantity = () => {
-    if (quantity > 1) {
-      setQuantity((prev) => prev - 1);
-    }
-  };
-
-  const incrementQuantity = () => {
-    setQuantity((prev) => prev + 1);
-  };
 
   const toggleDescription = () => {
     setShowDescription((prev) => !prev);
   };
 
   if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error.message} />;
 
   // TODO: implement API cart
 
@@ -59,7 +44,7 @@ export default function DetailBookPage({
             alt={book?.data.data.title ?? "Cover Buku"}
             width={165}
             height={200}
-            className="w-full rounded border object-contain p-4"
+            className="rounded border object-contain p-4"
           />
         </div>
         <div className="flex flex-col gap-4 md:w-2/4">
@@ -76,12 +61,14 @@ export default function DetailBookPage({
             >
               {book?.data.data.description ?? "-"}
             </p>
-            <button
-              className="w-fit text-sm text-primary"
-              onClick={toggleDescription}
-            >
-              {showDescription ? "Ringkas Deskripsi" : "Baca Selengkapnya"}
-            </button>
+            {book?.data.data.description && (
+              <button
+                className="w-fit text-sm text-primary"
+                onClick={toggleDescription}
+              >
+                {showDescription ? "Ringkas Deskripsi" : "Baca Selengkapnya"}
+              </button>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <p className="font-bold">Detail</p>
@@ -146,50 +133,16 @@ export default function DetailBookPage({
                 </p>
                 <p className="text-sm">{book?.data.data.language ?? "-"}</p>
               </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Stok
+                </p>
+                <p className="text-sm">{book?.data.data.quantity ?? "-"}</p>
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex h-fit flex-col gap-2 md:w-1/5">
-          <p className="font-semibold text-muted-foreground">
-            Ingin beli berapa?
-          </p>
-          <div className="flex flex-col gap-1">
-            <p className="text-sm font-bold">Jumlah Barang</p>
-            <div className="flex gap-x-2">
-              <button
-                className="rounded-full border bg-primary font-bold"
-                onClick={decrementQuantity}
-              >
-                <Minus />
-              </button>
-              <input
-                type="number"
-                min={1}
-                step={1}
-                value={quantity}
-                className="hide-arrow w-8 appearance-none bg-background text-center outline-none"
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                onWheel={(e) => e.currentTarget.blur()}
-              />
-              <button
-                className="rounded-full border bg-primary font-bold"
-                onClick={incrementQuantity}
-              >
-                <Plus />
-              </button>
-            </div>
-          </div>
-          <hr />
-          <div className="flex justify-between">
-            <p className="font-bold text-muted-foreground">Subtotal</p>
-            <p className="font-bold text-primary">
-              {formatRupiah(book?.data.data.price! * quantity)}
-            </p>
-          </div>
-          <Button>
-            Keranjang <ShoppingCart className="ml-2" />
-          </Button>
-        </div>
+        <AddToCart data={book?.data.data!} id={id} />
       </div>
     </div>
   );

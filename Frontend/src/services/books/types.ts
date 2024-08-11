@@ -10,7 +10,7 @@ export type Book = {
   language: string;
   published_date: Date;
   author_id: number;
-  publisher: number;
+  publisher_id: number;
 };
 
 export type GetBooksResponse = {

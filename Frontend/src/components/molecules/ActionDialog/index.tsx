@@ -13,6 +13,7 @@ import {
 type ActionDialogProps = {
   title: string;
   description?: string;
+  trigger: string | React.ReactNode;
   actionName: string;
   actionHandler: () => void;
   className?: string;
@@ -22,6 +23,7 @@ type ActionDialogProps = {
 export const ActionDialog = ({
   title,
   description,
+  trigger,
   actionName,
   actionHandler,
   className,
@@ -29,9 +31,7 @@ export const ActionDialog = ({
 }: ActionDialogProps) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger className={className}>
-        {actionName}
-      </AlertDialogTrigger>
+      <AlertDialogTrigger className={className}>{trigger}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
