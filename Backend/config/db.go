@@ -19,10 +19,10 @@ import (
 // function mengkoneksikan ke database
 func ConnectDB() *gorm.DB{
 	var db *gorm.DB
-	
+
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Error loading .env file")
+		log.Fatalf("Error loading .env file",err)
 	}
 	//mengambil nilai env
 	environment:=utils.Getenv("ENVIRONMENT","local")
