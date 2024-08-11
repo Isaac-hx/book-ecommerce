@@ -13,7 +13,8 @@ func CreateOrderByUser(c *gin.Context) {
 	userID := c.MustGet("userID").(uint)
 
 	var input struct {
-		Orders []struct {
+		PaymentMethodID int `json:"payment_method_id" binding:"required"`
+		Orders          []struct {
 			BookID   uint `json:"book_id" binding:"required"`
 			Quantity uint `json:"quantity" binding:"required"`
 		} `json:"orders" binding:"required"`
@@ -81,7 +82,7 @@ func CreateOrderByUser(c *gin.Context) {
 		StatusOrder:     "pending",
 		UserID:          userID,
 		TotalPrice:      totalOrderPrice,
-		PaymentMethodID: 1, // Metode pembayaran default
+		PaymentMethodID: input.PaymentMethodID,
 	}
 
 	if err := tx.Create(&order).Error; err != nil {
