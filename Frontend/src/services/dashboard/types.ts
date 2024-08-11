@@ -1,6 +1,6 @@
 export type OrderHistory = {
   date: string;
-  total: number;
+  total_price_order: number;
 };
 
 export type GetOrderHistoriesParams = {

@@ -66,7 +66,7 @@ const OrderHistoryChart = (params: { filterby: "date" | "month" | "year" }) => {
           content={<ChartTooltipContent indicator="line" />}
         />
         <Line
-          dataKey="total"
+          dataKey="total_price_order"
           type="natural"
           stroke="var(--color-desktop)"
           strokeWidth={2}
