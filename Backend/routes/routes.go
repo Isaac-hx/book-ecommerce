@@ -133,13 +133,15 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	ordersMiddlewareRouteprofile.Use(middlewares.UserMiddleware())
 	ordersMiddlewareRouteprofile.GET("", orders.GetAllOrdersByProfile)
 
-	r.GET("/get-order-item", orderItems.GetAllOrderItems)
-
 	// Private Create Order routes with user middleware
 	OrderItemsMiddlewareRoute := r.Group("/order-items")
 	OrderItemsMiddlewareRoute.Use(middlewares.UserMiddleware())
 	OrderItemsMiddlewareRoute.POST("", orderItems.CreateOrderItem)
 	OrderItemsMiddlewareRoute.PUT("/:id", orderItems.UpdateOrderItemById)
+	OrderItemsMiddlewareRoute.DELETE("/:id", orderItems.DeleteOrderItem)
+	
+	r.GET("/order-items", orderItems.GetAllOrderItems)
+	r.GET("/order-items/:id", orderItems.GetOrderItemsById)
 
 	ordersMiddlewareRoute := r.Group("/admin/order")
 	ordersMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
@@ -164,10 +166,17 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 		c.JSON(http.StatusOK, gin.H{"message": "Welcome to the admin dashboard"})
 	})
 
-	r.POST("/cart", cart.CreateCart)   // dev state <- must use user middlerware
-	r.DELETE("/cart", cart.DeleteCart) // dev state <- must use user middlerware
-	r.PUT("/cart", cart.UpdateCart)    // dev state <- must use user middlerware
-	r.GET("/cart", cart.GetListCarts)  // dev state <- must use user middlerware
+	r.POST("/cart-debug", cart.CreateCart)   // dev state <- must use user middlerware
+	r.DELETE("/cart-debug", cart.DeleteCart) // dev state <- must use user middlerware
+	r.PUT("/cart-debug", cart.UpdateCart)    // dev state <- must use user middlerware
+	r.GET("/cart-debug", cart.GetListCarts)  // dev state <- must use user middlerware
+
+	cartDebugMiddlewareRoute := r.Group("/cart") // debug
+	cartDebugMiddlewareRoute.Use(middlewares.UserMiddleware())
+	cartDebugMiddlewareRoute.POST("", cart.CreateCart) 
+	cartDebugMiddlewareRoute.PUT("", cart.UpdateCart) 
+	cartDebugMiddlewareRoute.DELETE("", cart.DeleteCart)
+	cartDebugMiddlewareRoute.GET("", cart.GetListCarts)
 
 	return r
 }
