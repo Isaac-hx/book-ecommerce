@@ -11,8 +11,6 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 
-	"gorm.io/driver/postgres"
-
 	"gorm.io/gorm"
 )
 
@@ -20,7 +18,7 @@ import (
 var DB *gorm.DB
 
 // function mengkoneksikan ke database
-func ConnectDB() {
+func ConnectDB() *gorm.DB{
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -54,14 +52,13 @@ func ConnectDB() {
 		port := os.Getenv("DB_PORT")
 		database := os.Getenv("DB_NAME")
 		// production
-		dsn := "host=" + host + " user=" + username + " password=" + password + " dbname=" + database + " port=" + port + " sslmode=require"
-		dbGorm, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, database)
+		dbGorm, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 		if err != nil {
 			panic(err.Error())
 		}
 
 		DB = dbGorm
-
 	}
 
 	//auto migration table saat terjadi perubahan atau penambahan models
@@ -80,4 +77,6 @@ func ConnectDB() {
 		&models.PaymentMethod{},
 		&models.Cart{},
 	)
+	return DB
+	
 }
