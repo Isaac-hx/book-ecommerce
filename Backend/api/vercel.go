@@ -3,11 +3,9 @@ package api
 import (
 	"Backend/config"
 	"Backend/routes"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 var (
@@ -15,10 +13,7 @@ var (
 )
 
 func init(){
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+
 	app = gin.New()
 	db:=config.ConnectDB()
 	routes.SetupRouter(db, app)

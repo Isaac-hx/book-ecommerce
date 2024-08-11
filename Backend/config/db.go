@@ -5,26 +5,29 @@ import (
 	"Backend/models"
 	"Backend/utils"
 	"fmt"
+	"log"
 	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 
 	"gorm.io/gorm"
 )
 
 // variabel pointer untuk menyimpan nilai yang sudah didapat dari function connectdb
-var DB *gorm.DB
 
 // function mengkoneksikan ke database
 func ConnectDB() *gorm.DB{
-
-
+	var db *gorm.DB
+	
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
 	//mengambil nilai env
-	dbProvider := utils.Getenv("DB_PROVIDER", "mysql")
 	environment:=utils.Getenv("ENVIRONMENT","local")
 
 	if environment == "local"{
-		fmt.Println(dbProvider)
 		//username:= utils.Getenv("USERNAME","root")
 		//password:= ""
 		database := utils.Getenv("DATABASE_NAME", "ecommerce_books")
@@ -38,7 +41,7 @@ func ConnectDB() *gorm.DB{
 			fmt.Println(dsn)
 			panic(err.Error())
 		}
-		DB = dbGorm
+		db = dbGorm
 
 	} else {
 		username := os.Getenv("DB_USERNAME")
@@ -53,12 +56,12 @@ func ConnectDB() *gorm.DB{
 			panic(err.Error())
 		}
 
-		DB = dbGorm
+		db = dbGorm
 	}
 
 	//auto migration table saat terjadi perubahan atau penambahan models
 	// ini gw pindahin biar ngubah sekali aja
-	DB.AutoMigrate(
+	db.AutoMigrate(
 		&models.Publisher{},
 		&models.Author{},
 		&models.Category{},
@@ -72,6 +75,6 @@ func ConnectDB() *gorm.DB{
 		&models.PaymentMethod{},
 		&models.Cart{},
 	)
-	return DB
+	return db
 	
 }
