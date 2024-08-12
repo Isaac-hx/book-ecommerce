@@ -11,6 +11,8 @@ export type DecodedToken = {
 };
 
 type AuthStore = {
+  _hasHydrated: boolean;
+  setHasHydrated: (state: boolean) => void;
   token: string | null;
   setToken: (token: string) => void;
   role: RoleAvailable | null;
@@ -23,9 +25,15 @@ type AuthStore = {
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
+      _hasHydrated: false,
       token: null,
       role: null,
       user: null,
+      setHasHydrated: (state: boolean) => {
+        set({
+          _hasHydrated: state,
+        });
+      },
       setToken: (token: string) => set({ token }),
       setRole: (role: RoleAvailable) => set({ role }),
       setUser: (user: DecodedToken | null) => set({ user }),
@@ -33,6 +41,9 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name: "auth",
+      onRehydrateStorage: (state) => {
+        return () => state.setHasHydrated(true);
+      },
     },
   ),
 );

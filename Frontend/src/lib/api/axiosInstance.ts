@@ -8,7 +8,7 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = document.cookie.match(/(?<=token=).+/)?.[0];
+    const token = document.cookie.match(/(?<=token=).+(?=;)/)?.[0];
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -24,7 +24,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      window.location.href = "/login";
+      // window.location.href = "/login";
     }
     return Promise.reject(error);
   },
