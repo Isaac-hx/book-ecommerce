@@ -7,6 +7,7 @@ import {
   GetOrderByIdResponse,
   GetOrdersResponse,
   UpdateOrderPayload,
+  UpdateOrderProofPaymentPayload,
 } from "./types";
 
 export const getOrders = () => {
@@ -34,7 +35,7 @@ export const getOrderUserById = (id: string) => {
   return axiosInstance.get<GetOrderByIdResponse>(`/order/${id}`);
 };
 
-export const updateOrderUserById = (params: UpdateOrderPayload) => {
+export const updateOrderUserById = (params: UpdateOrderProofPaymentPayload) => {
   const { id, ...payload } = params;
   return axiosInstance.put<{ message: string }>(`/order/${id}`, payload);
 };

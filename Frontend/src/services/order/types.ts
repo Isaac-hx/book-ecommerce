@@ -53,3 +53,8 @@ export type CreateOrderPayload = {
     quantity: number;
   }[];
 };
+
+export type UpdateOrderProofPaymentPayload = {
+  id: string;
+  proof_payment: string;
+};

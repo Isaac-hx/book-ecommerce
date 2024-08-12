@@ -27,9 +27,9 @@ import { profileFormSchema } from "@/lib/formSchema";
 import { useAuthStore } from "@/store";
 
 export default function ProfilePage() {
-  const { user } = useAuthStore();
+  const { user, _hasHydrated } = useAuthStore();
 
-  const { data: profile } = useGetProfileById(user?.user_id!);
+  const { data: profile } = useGetProfileById(user?.user_id!, !!_hasHydrated);
   const { mutate: uploadImage, isPending: isUploading } = useUploadImage();
 
   const form = useForm<z.infer<typeof profileFormSchema>>({
