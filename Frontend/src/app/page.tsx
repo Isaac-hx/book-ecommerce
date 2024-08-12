@@ -7,27 +7,29 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { axiosInstance } from "@/lib/api";
 import { GetBooksResponse } from "@/services/book/types";
 import { GetCategoriesResponse } from "@/services/category/types";
 
-// TODO: implement landing page
-const getBooks = async (): Promise<GetBooksResponse> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/books?limit=15`,
-  );
-  return response.json();
-};
-
-const getCategories = async (): Promise<GetCategoriesResponse> => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/category`,
-  );
-  return response.json();
-};
-
 export default async function Home() {
-  const books = await getBooks();
-  const categories = await getCategories();
+  const { data: books } = await axiosInstance.get<GetBooksResponse>("/books", {
+    params: {
+      limit: 13,
+    },
+  });
+
+  const { data: newBooks } = await axiosInstance.get<GetBooksResponse>(
+    "/books",
+    {
+      params: {
+        sort_by: "asc",
+        limit: 5,
+      },
+    },
+  );
+
+  const { data: categories } =
+    await axiosInstance.get<GetCategoriesResponse>("/category");
 
   return (
     <div className="container flex min-h-screen flex-col gap-12 p-12">
@@ -72,17 +74,17 @@ export default async function Home() {
         </Carousel>
       </div>
       <BookSection href="/books" title="Rekomendasi Untukmu">
-        {books.data.slice(0, 5).map((book) => (
+        {books.data.slice(3, 8).map((book) => (
           <BookCard key={book.title} {...book} />
         ))}
       </BookSection>
       <BookSection href="/books" title="Buku-Buku Terbaru">
-        {books.data.slice(5, 10).map((book) => (
+        {newBooks.data.map((book) => (
           <BookCard key={book.title} {...book} />
         ))}
       </BookSection>
       <BookSection href="/books" title="Buku-Buku Terpopuler">
-        {books.data.slice(10, 15).map((book) => (
+        {books.data.slice(8, 13).map((book) => (
           <BookCard key={book.title} {...book} />
         ))}
       </BookSection>
