@@ -51,13 +51,19 @@ func CreateOrderByUser(c *gin.Context) {
 		subTotal := book.Price * int(order.Quantity)
 		totalOrderPrice += subTotal
 
+		var profile models.Profile
+		if err := tx.First(&profile, "user_id = ?", userID).Error; err != nil {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Profile not found"})
+			return
+		}
+
 		// Tambahkan item pesanan ke dalam slice orderItems
 		orderItem := models.OrderItem{
 			SubTotal:      uint(subTotal),
 			QuantityTotal: order.Quantity,
 			Price:         book.Price,
 			BookID:        order.BookID,
-			ProfileID:     userID,
+			ProfileID:     profile.ID,
 		}
 		orderItems = append(orderItems, orderItem)
 

@@ -8,20 +8,18 @@ import (
 	"gorm.io/gorm"
 )
 
-
 func GetProfileByID(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var profile models.Profile
-	id := c.Param("id")
-	
-	if err := db.First(&profile, id).Error; err != nil {
+	userID := c.MustGet("userID").(uint)
+
+	if err := db.First(&profile, "user_id = ?", userID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Profile not found"})
 		return
 	}
-	
+
 	c.JSON(http.StatusOK, gin.H{"data": profile})
 }
-
 
 // dibuat untuk debug all data saja
 func GetAllProfiles(c *gin.Context) {

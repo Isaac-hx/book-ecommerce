@@ -50,13 +50,10 @@ func UpdateProfile(c *gin.Context) {
 		profile.Address = address
 	}
 
-	if err := db.Save(&profile).Error; err != nil {
+	if err := db.Model(&profile).Where("user_id = ?", userID).Updates(input).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Profile updated successfully"})
 }
-
-
-
