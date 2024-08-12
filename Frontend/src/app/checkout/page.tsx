@@ -1,5 +1,15 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { MapPin } from "lucide-react";
+import Image from "next/image";
+import { redirect, useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -23,15 +33,6 @@ import { useGetPaymentMethods } from "@/hooks/useGetPaymentMethods";
 import { useGetProfileById } from "@/hooks/useGetProfileById";
 import { formatKilogram, formatRupiah } from "@/lib/utils";
 import { useAuthStore } from "@/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
-import { MapPin } from "lucide-react";
-import Image from "next/image";
-import { redirect, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 
 const CreateOrderFormSchema = z.object({
   payment_method_id: z.coerce.number().min(1),
@@ -61,15 +62,6 @@ export default function CheckoutPage() {
     isError: isGetAllCartError,
   } = useGetAllCart();
 
-  if (isGetAllCartError) return redirect("/cart");
-
-  const mapAllCart = allCart?.data.data.map((cart) => {
-    return {
-      book_id: cart.book_id,
-      quantity: cart.quantity,
-    };
-  });
-
   const { user } = useAuthStore();
   const { data: profile, isLoading: isGetProfileLoading } = useGetProfileById(
     user?.user_id!,
@@ -78,14 +70,23 @@ export default function CheckoutPage() {
   const { data: paymentMethods, isLoading: isGetPaymentMethodLoading } =
     useGetPaymentMethods();
 
+  const mapAllCart = allCart?.data.data.map((cart) => {
+    return {
+      book_id: cart.book_id,
+      quantity: cart.quantity,
+    };
+  });
+
   useEffect(() => {
     form.reset({
       ...form.getValues(),
       orders: mapAllCart,
     });
-  }, [allCart, form]);
+  }, [mapAllCart, form]);
 
   const { mutateAsync } = useCreateOrder();
+
+  if (isGetAllCartError) return redirect("/cart");
 
   const handleCreateOrder = (formValues: FormValues) => {
     mutateAsync(formValues)

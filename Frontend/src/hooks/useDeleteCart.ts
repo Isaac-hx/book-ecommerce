@@ -1,5 +1,6 @@
-import { deleteCart } from "@/services/cart";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { deleteCart } from "@/services/cart";
 
 export const useDeleteCart = () => {
   const queryClient = useQueryClient();

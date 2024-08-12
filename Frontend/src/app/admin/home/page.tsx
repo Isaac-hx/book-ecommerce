@@ -7,11 +7,11 @@ import {
   TrendingUp,
   UserPen,
 } from "lucide-react";
+import { useState } from "react";
 
 import Breadcrumb from "@/components/molecules/breadcrumb";
 import OrderHistoryChart from "@/components/organisms/order-history-chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetResourceSummary } from "@/hooks/useGetResourceSummary";
 import {
   Select,
   SelectContent,
@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
+import { useGetResourceSummary } from "@/hooks/useGetResourceSummary";
 
 const Page = () => {
   const [timeRange, setTimeRange] = useState<"date" | "month" | "year">("date");

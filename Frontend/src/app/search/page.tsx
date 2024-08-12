@@ -1,6 +1,7 @@
+import React from "react";
+
 import { BookCard } from "@/components/molecules";
 import { GetBooksResponse } from "@/services/book/types";
-import React from "react";
 
 export default async function SearchPage({
   searchParams,
@@ -14,7 +15,8 @@ export default async function SearchPage({
       <div className="flex flex-col items-center justify-between md:flex-row">
         <p>
           Menampilkan total {data?.total_data} dari hasil pencarian buku dengan
-          kata kunci <span className="font-bold">"{searchParams.title}"</span>
+          kata kunci{" "}
+          <span className="font-bold">{`"${searchParams.title}"`}</span>
         </p>
       </div>
       <div className="mx-auto grid min-h-screen w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
