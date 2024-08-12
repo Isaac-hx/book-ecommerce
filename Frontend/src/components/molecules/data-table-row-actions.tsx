@@ -14,11 +14,13 @@ import {
 
 interface DataTableRowActionsProps {
   updatePageUrl: string;
+  actionName?: string;
   onDeleteButtonClick?: () => void;
 }
 
 export function DataTableRowActions({
   updatePageUrl,
+  actionName = "Ubah",
   onDeleteButtonClick,
 }: DataTableRowActionsProps) {
   return (
@@ -36,7 +38,7 @@ export function DataTableRowActions({
         <DropdownMenuItem asChild>
           <Link href={updatePageUrl}>
             <Pencil className="mr-2 h-4 w-4" />
-            Ubah
+            {actionName}
           </Link>
         </DropdownMenuItem>
         {onDeleteButtonClick && (

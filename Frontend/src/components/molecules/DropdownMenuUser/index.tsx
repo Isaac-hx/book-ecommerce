@@ -26,7 +26,8 @@ export const DropdownMenuUser = () => {
     clearAuth();
     router.push("/");
     cookies.remove("token");
-    toast.success("Logout Success");
+    cookies.remove("role");
+    toast.success("Berhasil Keluar");
   };
 
   return (
