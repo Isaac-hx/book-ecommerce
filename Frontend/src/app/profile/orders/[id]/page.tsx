@@ -127,11 +127,11 @@ export default function OrderDetailPage({
                 <TableCell>{order?.data.data.email_address || "-"}</TableCell>
               </TableRow>
               <TableRow>
-                <TableHead>Nama Awalan</TableHead>
+                <TableHead>Nama Depan</TableHead>
                 <TableCell>{order?.data.data.first_name || "-"}</TableCell>
               </TableRow>
               <TableRow>
-                <TableHead>Nama Akhiran</TableHead>
+                <TableHead>Nama Belakang</TableHead>
                 <TableCell>{order?.data.data.last_name || "-"}</TableCell>
               </TableRow>
               <TableRow>

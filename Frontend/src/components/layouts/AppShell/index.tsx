@@ -13,13 +13,13 @@ import { Navbar } from "../Navbar";
 export const AppShell = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { role } = useAuthStore((state) => state);
+  const { _hasHydrated, role } = useAuthStore((state) => state);
 
   useEffect(() => {
-    if (!pathname.startsWith("/admin") && role === "admin") {
+    if (_hasHydrated && !pathname.startsWith("/admin") && role === "admin") {
       router.replace("/admin/home");
     }
-  }, [router, pathname, role]);
+  }, [_hasHydrated, router, pathname, role]);
 
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
