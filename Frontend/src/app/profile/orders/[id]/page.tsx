@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { ErrorMessage } from "@/components/molecules";
 import PaymentProofImage from "@/components/molecules/PaymentProofImage";
 import OrderDetailDataTable from "@/components/organisms/order-detail-data-table";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 import {
   Table,
   TableBody,
@@ -34,8 +36,6 @@ import { useUpdateOrderUserById } from "@/hooks/useUpdateOrderUserById";
 import { useUploadImage } from "@/hooks/useUploadImage";
 import { formatRupiah, getOrderStatusBadgeVariant } from "@/lib/utils";
 import { OrderStatus } from "@/services/order/types";
-import LoadingSpinner from "@/components/ui/loading-spinner";
-import { ErrorMessage } from "@/components/molecules";
 
 type OrderDetailPageProps = {
   params: {
