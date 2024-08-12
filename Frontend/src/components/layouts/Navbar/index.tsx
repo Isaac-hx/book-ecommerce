@@ -130,12 +130,6 @@ export const Navbar = () => {
             >
               Boomerce
             </Link>
-            <Link
-              href={"/category"}
-              className="flex w-full justify-between border-b p-2 text-primary"
-            >
-              Kategori <ChevronRight />
-            </Link>
             {token &&
               navMobileItems.map((item) => (
                 <Link

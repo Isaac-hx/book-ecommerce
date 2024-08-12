@@ -5,7 +5,7 @@ import { AxiosError } from "axios";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -62,20 +62,25 @@ export default function CheckoutPage() {
     isError: isGetAllCartError,
   } = useGetAllCart();
 
-  const { user } = useAuthStore();
+  const { _hasHydrated, user } = useAuthStore();
   const { data: profile, isLoading: isGetProfileLoading } = useGetProfileById(
     user?.user_id!,
+    !!_hasHydrated,
   );
 
   const { data: paymentMethods, isLoading: isGetPaymentMethodLoading } =
     useGetPaymentMethods();
 
-  const mapAllCart = allCart?.data.data.map((cart) => {
-    return {
-      book_id: cart.book_id,
-      quantity: cart.quantity,
-    };
-  });
+  const mapAllCart = useMemo(() => {
+    return (
+      allCart?.data.data.map((cart) => {
+        return {
+          book_id: cart.book_id,
+          quantity: cart.quantity,
+        };
+      }) ?? []
+    );
+  }, [allCart]);
 
   useEffect(() => {
     form.reset({
