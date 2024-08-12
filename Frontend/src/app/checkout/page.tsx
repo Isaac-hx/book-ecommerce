@@ -33,6 +33,7 @@ import { useGetPaymentMethods } from "@/hooks/useGetPaymentMethods";
 import { useGetProfileById } from "@/hooks/useGetProfileById";
 import { formatKilogram, formatRupiah } from "@/lib/utils";
 import { useAuthStore } from "@/store";
+import Link from "next/link";
 
 const CreateOrderFormSchema = z.object({
   payment_method_id: z.coerce.number().min(1),
@@ -91,8 +92,6 @@ export default function CheckoutPage() {
 
   const { mutateAsync } = useCreateOrder();
 
-  if (isGetAllCartError) return redirect("/cart");
-
   const handleCreateOrder = (formValues: FormValues) => {
     mutateAsync(formValues)
       .then(() => {
@@ -103,6 +102,8 @@ export default function CheckoutPage() {
         toast.error(err.response?.data.error);
       });
   };
+
+  if (isGetAllCartError) return redirect("/cart");
 
   if (isGetAllCartLoading || isGetPaymentMethodLoading || isGetProfileLoading)
     return <LoadingSpinner />;
@@ -117,13 +118,24 @@ export default function CheckoutPage() {
             <div className="flex items-center gap-x-2">
               <MapPin /> Alamat Tujuan Pengiriman
             </div>
-            <div className="flex flex-col gap-2">
-              <p className="font-semibold">
-                {profile?.data.data.first_name} {profile?.data.data.last_name}
-              </p>
-              <p className="text-sm">{profile?.data.data.phone}</p>
-              <p className="text-sm">{profile?.data.data.address}</p>
-            </div>
+            {profile?.data.data.address ? (
+              <div className="flex flex-col gap-2">
+                <p className="font-semibold">
+                  {profile?.data.data.first_name} {profile?.data.data.last_name}
+                </p>
+                <p className="text-sm">{profile?.data.data.phone}</p>
+                <p className="text-sm">{profile?.data.data.address}</p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                <p className="text-sm">
+                  Anda belum mempunyai alamat pengiriman
+                </p>
+                <Link href="/profile" className="text-primary">
+                  Tambah Alamat
+                </Link>
+              </div>
+            )}
           </div>
           {/* Cart Section */}
           {allCart?.data.data.map((book, index) => (
@@ -245,6 +257,10 @@ export default function CheckoutPage() {
                 <Button
                   type="submit"
                   className="rounded-full py-3 font-bold md:py-6"
+                  disabled={
+                    allCart?.data.data.length === 0 ||
+                    !profile?.data.data.address
+                  }
                 >
                   Bayar
                 </Button>
