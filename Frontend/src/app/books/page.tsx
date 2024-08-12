@@ -15,9 +15,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGetCategories } from "@/hooks/useGetCategories";
 import { axiosInstance } from "@/lib/api";
 import { GetBooksResponse } from "@/services/books/types";
-import { useGetCategories } from "@/hooks/useGetCategories";
 
 export default function BooksPage() {
   const searchParams = useSearchParams();

@@ -3,6 +3,7 @@
 import { format } from "date-fns";
 import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
 
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   type ChartConfig,
   ChartContainer,
@@ -10,7 +11,6 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useGetOrderHistories } from "@/hooks/useGetOrderHistories";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const chartConfig = {
   desktop: {

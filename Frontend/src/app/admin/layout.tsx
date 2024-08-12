@@ -8,6 +8,7 @@ import {
   Tags,
   UserPen,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCookies } from "next-client-cookies/server";
@@ -15,7 +16,6 @@ import { type PropsWithChildren } from "react";
 
 import { MobileSidebar, Sidebar } from "@/components/layouts";
 import { UserNav } from "@/components/molecules/user-nav";
-import Image from "next/image";
 
 const menus = [
   {

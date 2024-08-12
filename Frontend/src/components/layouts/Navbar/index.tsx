@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight, Menu, ShoppingCart } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCookies } from "next-client-cookies";
@@ -16,7 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuthStore } from "@/store";
-import Image from "next/image";
 
 export const Navbar = () => {
   const navMobileItems = [
