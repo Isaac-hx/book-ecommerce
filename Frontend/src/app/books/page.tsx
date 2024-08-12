@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { axiosInstance } from "@/lib/api";
 import { GetBooksResponse } from "@/services/books/types";
+import { useGetCategories } from "@/hooks/useGetCategories";
 
 export default function BooksPage() {
   const searchParams = useSearchParams();
@@ -27,14 +28,18 @@ export default function BooksPage() {
   const [page, setPage] = useState(currentPage);
   const [pageSize, setPageSize] = useState(10);
 
+  const [category, setCategory] = useState(searchParams.get("category") || "");
+
+  const { data: categories } = useGetCategories();
   const { data, isLoading } = useQuery<GetBooksResponse>({
-    queryKey: ["books", { page_index: currentPage, limit: pageSize }],
+    queryKey: ["books", { page_index: currentPage, limit: pageSize, category }],
     queryFn: async () => {
       const response = await axiosInstance.get<GetBooksResponse>("/books", {
         // currentPage - 1 karena response API untuk current page dimulai dari 0
         params: {
           page_index: currentPage - 1,
           limit: pageSize,
+          category,
         },
       });
       return response.data;
@@ -50,27 +55,53 @@ export default function BooksPage() {
 
   return (
     <div className="container flex flex-col gap-12 p-12">
-      <div className="flex flex-col items-center justify-between md:flex-row">
-        <p>
-          Menampilkan {data?.data.length} dari total {data?.total_data} buku
-        </p>
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Data per halaman</p>
-          <Select
-            value={`${pageSize}`}
-            onValueChange={(value) => setPageSize(Number(value))}
-          >
-            <SelectTrigger className="h-8 w-[70px]">
-              <SelectValue placeholder={10} />
+      <div className="space-y-2">
+        <div className="flex flex-col items-center justify-between md:flex-row">
+          <p>
+            Menampilkan {data?.data.length} dari total {data?.total_data} buku
+          </p>
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium">Data per halaman</p>
+            <Select
+              value={`${pageSize}`}
+              onValueChange={(value) => setPageSize(Number(value))}
+            >
+              <SelectTrigger className="h-8 w-[70px]">
+                <SelectValue placeholder={10} />
+              </SelectTrigger>
+              <SelectContent side="top">
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-sm font-medium">Kategori</span>
+          <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger className="h-8 w-36">
+              <SelectValue placeholder="Pilih kategori" />
             </SelectTrigger>
-            <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
+            <SelectContent>
+              {categories?.data.data.map((category) => (
+                <SelectItem key={category.ID} value={category.name}>
+                  {category.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+          {category && (
+            <Button
+              variant="ghost"
+              className="h-fit p-0"
+              onClick={() => setCategory("")}
+            >
+              <X />
+            </Button>
+          )}
         </div>
       </div>
       <div className="mx-auto grid min-h-screen w-full grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

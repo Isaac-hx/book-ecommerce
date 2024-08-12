@@ -15,6 +15,7 @@ import { type PropsWithChildren } from "react";
 
 import { MobileSidebar, Sidebar } from "@/components/layouts";
 import { UserNav } from "@/components/molecules/user-nav";
+import Image from "next/image";
 
 const menus = [
   {
@@ -86,7 +87,15 @@ const Layout = ({ children }: PropsWithChildren) => {
     <div className="flex h-svh flex-col bg-background">
       <header className="w-full border-b bg-background">
         <div className="flex h-14 items-center justify-between px-6">
-          <Link href="/">Boomerce</Link>
+          <div className="flex items-center">
+            <Image
+              src="/boomerce-logo.png"
+              alt="boomerce_logo"
+              width={50}
+              height={50}
+            />
+            <Link href="/">Boomerce</Link>
+          </div>
           <div className="flex items-center gap-2">
             <UserNav />
             <MobileSidebar menus={menus} />

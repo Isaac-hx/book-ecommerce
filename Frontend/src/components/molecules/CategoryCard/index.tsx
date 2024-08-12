@@ -9,7 +9,7 @@ type CategoryCardProps = {
 export const CategoryCard = ({ category_cover, name }: CategoryCardProps) => {
   return (
     // TODO: href to correct category
-    <Link href={`/`} className="flex flex-col items-center space-y-2">
+    <Link href={`/books?category=${name}`} className="flex flex-col items-center space-y-2">
       <figure className="flex h-52 w-52 items-center justify-center overflow-hidden rounded-full border bg-accent p-2">
         <Image
           src={category_cover}

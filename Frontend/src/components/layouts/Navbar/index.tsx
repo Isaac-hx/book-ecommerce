@@ -2,7 +2,7 @@
 
 import { ChevronRight, Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCookies } from "next-client-cookies";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuthStore } from "@/store";
+import Image from "next/image";
 
 export const Navbar = () => {
   const navMobileItems = [
@@ -72,12 +73,17 @@ export const Navbar = () => {
     <header className="sticky top-0 z-10 flex flex-col gap-y-4 bg-background p-2 shadow">
       {/* Desktop */}
       <nav className="container hidden h-full items-center justify-between gap-4 md:flex">
-        <Link href="/" className="text-2xl font-bold text-primary">
-          Boomerce
-        </Link>
-        <Link href="/category" className="text-primary">
-          Kategori
-        </Link>
+        <div className="flex items-center gap-2">
+          <Image
+            src="/boomerce-logo.png"
+            alt="boomerce_logo"
+            width={50}
+            height={50}
+          />
+          <Link href="/" className="text-2xl font-bold text-primary">
+            Boomerce
+          </Link>
+        </div>
         <SearchInput
           placeholder="Cari Buku..."
           onChange={handleSearch}
