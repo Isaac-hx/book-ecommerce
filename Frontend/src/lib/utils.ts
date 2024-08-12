@@ -57,3 +57,7 @@ export const getOrderStatusBadgeVariant = (
       return "outline";
   }
 };
+
+export const getCookie = (name: string) => {
+  return document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`))?.at(2) ?? "";
+};

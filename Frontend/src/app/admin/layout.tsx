@@ -6,6 +6,7 @@ import {
   NotebookPen,
   Package,
   Tags,
+  User,
   UserPen,
 } from "lucide-react";
 import Image from "next/image";
@@ -60,6 +61,11 @@ const menus = [
         path: "/admin/payment-methods",
         label: "Rekening",
         icon: <CreditCard className="mr-3" />,
+      },
+      {
+        path: "/admin/users",
+        label: "Pengguna",
+        icon: <User className="mr-3" />,
       },
     ],
   },

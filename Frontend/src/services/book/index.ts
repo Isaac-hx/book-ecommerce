@@ -8,8 +8,9 @@ import {
   UpdateBookPayload,
 } from "./types";
 
-export const getBooks = (params: GetAllBookParams) => {
+export const getBooks = (params: GetAllBookParams, signal?: AbortSignal) => {
   return axiosInstance.get<GetBooksResponse>("/books", {
+    signal,
     params: {
       page_index: params.page_index,
       limit: params.limit,

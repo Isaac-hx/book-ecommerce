@@ -48,9 +48,10 @@ type FormValues = z.infer<typeof stockCreateFormSchema>;
 const StockCreateForm = () => {
   const [params, setParams] = useState<GetAllBookParams>({
     title: "",
+    limit: 100,
   });
 
-  const { data: books, isLoading } = useGetBooks(params);
+  const { data: books } = useGetBooks(params);
   const { mutateAsync, isPending, error } = useCreateStock();
 
   const router = useRouter();

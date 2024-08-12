@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+export const optionalStr = z.string();
 export const requiredStr = z.string().min(1, { message: "Wajb diisi" });
 export const requiredNum = z.coerce
   .number({ invalid_type_error: "Wajib diisi" })
@@ -18,4 +19,7 @@ export const optionalFile = z.instanceof(File).nullable();
 export const requiredfile = z.instanceof(File, { message: "Wajib diisi" });
 export const orderStatus = z.enum(["pending", "paid", "rejected"], {
   message: 'Status harus "pending", "dibayar", atau "ditolak"',
+});
+export const userStatus = z.enum(["active", "blocked"], {
+  message: 'Status harus "aktif" atau "diblokir"',
 });
