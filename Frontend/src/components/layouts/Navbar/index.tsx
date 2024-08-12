@@ -74,14 +74,13 @@ export const Navbar = () => {
       {/* Desktop */}
       <nav className="container hidden h-full items-center justify-between gap-4 md:flex">
         <div className="flex items-center gap-2">
-          <Image
-            src="/boomerce-logo.png"
-            alt="boomerce_logo"
-            width={50}
-            height={50}
-          />
           <Link href="/" className="text-2xl font-bold text-primary">
-            Boomerce
+            <Image
+              src="/logo.png"
+              alt="boomerce_logo"
+              width={120}
+              height={50}
+            />
           </Link>
         </div>
         <SearchInput
@@ -124,11 +123,13 @@ export const Navbar = () => {
             side="left"
             className="flex h-full flex-col overflow-y-auto"
           >
-            <Link
-              href="/"
-              className="text-center text-2xl font-bold text-primary"
-            >
-              Boomerce
+            <Link href="/" className="flex justify-center">
+              <Image
+                src={"/logo.png"}
+                alt="boomerce_logo"
+                width={150}
+                height={50}
+              />
             </Link>
             {token &&
               navMobileItems.map((item) => (
@@ -165,7 +166,12 @@ export const Navbar = () => {
           </SheetContent>
         </Sheet>
         <Link href="/" className="text-2xl font-bold text-primary">
-          Boomerce
+          <Image
+            src={"/logo.png"}
+            alt="boomerce_logo"
+            width={120}
+            height={50}
+          />
         </Link>
         <Link href="/cart">
           <ShoppingCart className="text-primary" size={28} />

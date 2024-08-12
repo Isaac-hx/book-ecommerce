@@ -88,13 +88,14 @@ const Layout = ({ children }: PropsWithChildren) => {
       <header className="w-full border-b bg-background">
         <div className="flex h-14 items-center justify-between px-6">
           <div className="flex items-center">
-            <Image
-              src="/boomerce-logo.png"
-              alt="boomerce_logo"
-              width={50}
-              height={50}
-            />
-            <Link href="/">Boomerce</Link>
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="boomerce_logo"
+                width={100}
+                height={50}
+              />
+            </Link>
           </div>
           <div className="flex items-center gap-2">
             <UserNav />
