@@ -69,11 +69,11 @@ const OrderDetail = ({ id }: { id: string }) => {
               <TableCell>{data?.data.data.email_address || "-"}</TableCell>
             </TableRow>
             <TableRow>
-              <TableHead>Nama Awalan</TableHead>
+              <TableHead>Nama Depan</TableHead>
               <TableCell>{data?.data.data.first_name || "-"}</TableCell>
             </TableRow>
             <TableRow>
-              <TableHead>Nama Akhiran</TableHead>
+              <TableHead>Nama Belakang</TableHead>
               <TableCell>{data?.data.data.last_name || "-"}</TableCell>
             </TableRow>
             <TableRow>
