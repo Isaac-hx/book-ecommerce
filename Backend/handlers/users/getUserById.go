@@ -20,10 +20,11 @@ func GetUserById(c *gin.Context) {
 		Email     string `json:"email"`
 		Address   string `json:"address"`
 		CreatedAt string `json:"created_at"`
+		Status    string `json:"status"`
 	}
 
 	if err := db.Table("users").
-		Select("users.id, profiles.first_name, profiles.last_name, profiles.avatar_url, profiles.phone, users.email_address as email, profiles.address, users.created_at").
+		Select("users.id, profiles.first_name, profiles.last_name, profiles.avatar_url, profiles.phone, users.email_address as email, profiles.address, users.created_at, users.status").
 		Joins("left join profiles on profiles.user_id = users.id").
 		Where("users.id = ?", userID).
 		Scan(&user).Error; err != nil {
