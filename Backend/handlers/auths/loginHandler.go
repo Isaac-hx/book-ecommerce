@@ -23,11 +23,16 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	token, role, err := models.LoginCheck(input.EmailAddress, input.Password, db)
+	token, role, status, err := models.LoginCheck(input.EmailAddress, input.Password, db)
 
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "email or password is incorrect."})
+		return
+	}
+
+	if status == "blocked" {
+		c.JSON(http.StatusForbidden, gin.H{"error": "your account is blocked."})
 		return
 	}
 
