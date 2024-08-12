@@ -15,6 +15,7 @@ import (
 	"Backend/handlers/profiles"
 	"Backend/handlers/publishers"
 	"Backend/handlers/stocks"
+	"Backend/handlers/users"
 
 	"Backend/middlewares"
 )
@@ -108,8 +109,6 @@ func SetupRouter(db *gorm.DB,r *gin.Engine)  {
 	summaryMiddlewareRoute.GET("/author", authors.GetTotalRowAuthor)
 	summaryMiddlewareRoute.GET("/order", orders.GetTotalRowOrders)
 
-
-
 	paymentMethodMiddlewareRoute := r.Group("/payment-method")
 	paymentMethodMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
 	paymentMethodMiddlewareRoute.POST("", paymentMethods.CreatePaymentMethod)
@@ -118,8 +117,6 @@ func SetupRouter(db *gorm.DB,r *gin.Engine)  {
 	// Public route for list payment method
 	r.GET("/payment-method", paymentMethods.GetAllPayment)
 	r.GET("/payment-method/:id", paymentMethods.GetPaymentById)
-
-
 
 	// // Private Create Order routes with user middleware
 	// OrderItemsMiddlewareRoute := r.Group("/order-items")
@@ -149,13 +146,17 @@ func SetupRouter(db *gorm.DB,r *gin.Engine)  {
 	changePasswordMiddlewareRoute.Use(middlewares.UserMiddleware())
 	changePasswordMiddlewareRoute.POST("", auths.ChangePasswordHandler)
 
+	cartMiddlewareRoute := r.Group("/cart") 
+	cartMiddlewareRoute.Use(middlewares.UserMiddleware())
+	cartMiddlewareRoute.POST("", cart.CreateCart) 
+	cartMiddlewareRoute.PUT("", cart.UpdateCart) 
+	cartMiddlewareRoute.DELETE("", cart.DeleteCart)
+	cartMiddlewareRoute.GET("", cart.GetListCarts)
 
-
-	cartDebugMiddlewareRoute := r.Group("/cart") 
-	cartDebugMiddlewareRoute.Use(middlewares.UserMiddleware())
-	cartDebugMiddlewareRoute.POST("", cart.CreateCart) 
-	cartDebugMiddlewareRoute.PUT("", cart.UpdateCart) 
-	cartDebugMiddlewareRoute.DELETE("", cart.DeleteCart)
-	cartDebugMiddlewareRoute.GET("", cart.GetListCarts)
+	usersMiddlewareRoute := r.Group("/users")
+	usersMiddlewareRoute.Use(middlewares.RoleMiddleware("admin"))
+	usersMiddlewareRoute.GET("", users.GetAllUsers)
+	usersMiddlewareRoute.GET("/:id", users.GetUserById)
+	usersMiddlewareRoute.PUT("/:id", users.UpdateUserById)
 
 }

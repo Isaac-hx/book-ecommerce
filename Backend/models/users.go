@@ -13,7 +13,8 @@ type User struct {
 	EmailAddress string `gorm:"unique;not null;type:varchar(100)" json:"email"`
 	Password     string `gorm:"not null;type:varchar(255)" json:"password"`
 	Role         string `gorm:"type:varchar(100)" json:"role"`
-	Order		[]Order			`json:"orders"`
+	Status		 string `gorm:"not null;type:enum('active','blocked');default:'active'" json:"status"`
+	Order		[]Order `json:"orders"`
 
 }
 
@@ -31,26 +32,26 @@ func (u *User) SaveUser(db *gorm.DB) (*User, error) {
 	return u, nil
 }
 
-func LoginCheck(email string, password string, db *gorm.DB) (string, string, error) {
+func LoginCheck(email string, password string, db *gorm.DB) (string, string, string, error) {
 	var err error
 	u := User{}
 
 	err = db.Model(User{}).Where("email_address = ?", email).Take(&u).Error
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
 	err = VerifyPassword(u.Password, password)
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
-		return "", "", errors.New("incorrect password")
+		return "", "", "", errors.New("password salah")
 	}
 
 	token, err := utils.GenerateToken(u.ID, u.Role)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
-	return token, u.Role, nil
+	return token, u.Role, u.Status, nil
 }
 
 func VerifyPassword(hashedPassword, password string) error {
