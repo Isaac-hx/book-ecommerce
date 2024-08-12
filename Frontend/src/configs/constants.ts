@@ -3,3 +3,8 @@ export const orderStatuses = {
   paid: "dibayar",
   rejected: "ditolak",
 };
+
+export const userStatuses = {
+  active: "aktif",
+  blocked: "diblokir",
+};

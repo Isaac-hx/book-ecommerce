@@ -1,6 +1,8 @@
 import axios from "axios";
 import { getCookies } from "next-client-cookies/server";
 
+import { getCookie } from "../utils";
+
 const BASEURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const axiosInstance = axios.create({
@@ -13,7 +15,7 @@ axiosInstance.interceptors.request.use(
     if (typeof window === "undefined") {
       token = getCookies().get("token")!;
     } else {
-      token = document.cookie.match(/(?<=token=).+(?=;)/)?.[0]!;
+      token = getCookie("token");
     }
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

@@ -10,6 +10,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   SortingState,
   useReactTable,
   VisibilityState,
@@ -31,14 +32,34 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  rowCount?: number;
+  manualPagination?: boolean;
+  pagination?: PaginationState;
   onAddButtonClick?: () => void;
+  onPaginationChange?: (pagination: PaginationState) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  rowCount,
+  pagination: initialPagination,
+  manualPagination,
+  onPaginationChange,
   onAddButtonClick,
 }: DataTableProps<TData, TValue>) {
+  const [pagination, setPagination] = React.useState<PaginationState>(
+    initialPagination ?? {
+      pageSize: 10,
+      pageIndex: 0,
+    },
+  );
+
+  React.useEffect(() => {
+    onPaginationChange?.(pagination);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pagination]);
+
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -51,12 +72,16 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     state: {
+      pagination,
       sorting,
       columnVisibility: { ...columnVisibility, select: false },
       rowSelection,
       columnFilters,
     },
+    manualPagination,
+    rowCount,
     enableRowSelection: true,
+    onPaginationChange: setPagination,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
